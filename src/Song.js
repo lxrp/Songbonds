@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 import PropTypes from 'prop-types'
-import songdata from './songdata.json'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
@@ -13,23 +12,17 @@ Song.defaultProps = {
   title: '(No title)'
 }
 
-export default function Song() {
+export default function Song({ key, title, lyrics, tabs }) {
   return (
-    <div>
-      {songdata.map(song => (
-        <SongStyled key="index">
-          <h2>{song.title}</h2>
-          <p>
-            {song.lyrics.split('/&').map(line => (
-              <li>{line}</li>
-            ))}
-          </p>
-          <p>
-            {song.tabs && song.tabs.split('/&').map(line => <li>{line}</li>)}
-          </p>
-        </SongStyled>
-      ))}
-    </div>
+    <SongStyled>
+      <h2>{title}</h2>
+      <p>
+        {lyrics.split('/&').map(line => (
+          <li>{line}</li>
+        ))}
+      </p>
+      <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
+    </SongStyled>
   )
 }
 
@@ -37,4 +30,6 @@ const SongStyled = styled.article`
   border: 2px solid;
   background-color: darkgray;
   margin: 10px;
+  padding: 10px;
+  list-style: none;
 `

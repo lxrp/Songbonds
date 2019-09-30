@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import PropTypes from 'prop-types'
 
@@ -13,15 +13,25 @@ Song.defaultProps = {
 }
 
 export default function Song({ key, title, lyrics, tabs }) {
+  const [isSongContentVisible, setIsSongContentVisible] = useState(false)
+
+  function toggleSongContent() {
+    setIsSongContentVisible(!isSongContentVisible)
+  }
+
   return (
     <SongStyled>
-      <h2>{title}</h2>
-      <p>
-        {lyrics.split('/&').map(line => (
-          <li>{line}</li>
-        ))}
-      </p>
-      <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
+      <h2 onClick={toggleSongContent}>{title}</h2>
+      {isSongContentVisible && (
+        <section>
+          <p>
+            {lyrics.split('/&').map(line => (
+              <li>{line}</li>
+            ))}
+          </p>
+          <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
+        </section>
+      )}
     </SongStyled>
   )
 }

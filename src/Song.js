@@ -23,13 +23,8 @@ export default function Song({ key, title, lyrics, tabs, sound }) {
 
   return (
     <SongStyled>
-      {console.log(sound)}
       <h2 onClick={toggleSongContent}>{title}</h2>
-      <AudioPlayer
-        src={require('' + sound)}
-        onPlay={e => console.log('PLAY')}
-        // other props here
-      />
+
       {isSongContentVisible && (
         <section>
           <p>
@@ -38,6 +33,11 @@ export default function Song({ key, title, lyrics, tabs, sound }) {
             ))}
           </p>
           <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
+          <AudioPlayer
+            src={require('' + sound)}
+            onPlay={e => console.log('PLAY')}
+            // other props here
+          />
         </section>
       )}
     </SongStyled>

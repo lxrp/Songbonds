@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import PropTypes from 'prop-types'
+import AudioPlayer from 'react-h5-audio-player'
+// import exampleSong from './WhereEaglesDare.mp3'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
@@ -21,6 +23,11 @@ export default function Song({ key, title, lyrics, tabs }) {
 
   return (
     <SongStyled>
+      <AudioPlayer
+        src={require('./WhereEaglesDare.mp3')}
+        onPlay={e => console.log('onPlay')}
+        // other props here
+      />
       <h2 onClick={toggleSongContent}>{title}</h2>
       {isSongContentVisible && (
         <section>

@@ -11,7 +11,7 @@ export default function App() {
           title={song.title}
           lyrics={song.lyrics}
           tabs={song.tabs}
-          sound={song.sound}
+          sounds={song.sounds}
         />
       ))}
     </div>

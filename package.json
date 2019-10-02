@@ -3,8 +3,12 @@
   "author": "Alexander Arp <alexanderarp@yahoo.de> ",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3333",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "mongoose": "^5.7.3",
+    "nodemon": "^1.19.3",
     "prop-types": "^15.7.2",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
@@ -14,7 +18,9 @@
     "styled-icons": "^8.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "run-p server dev",
+    "server": "nodemon server/server.js",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -42,6 +48,7 @@
     "@storybook/addon-links": "^5.2.1",
     "@storybook/addons": "^5.2.1",
     "@storybook/react": "^5.2.1",
-    "babel-loader": "^8.0.6"
+    "babel-loader": "^8.0.6",
+    "npm-run-all": "^4.1.5"
   }
 }

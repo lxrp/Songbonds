@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Song from './Song'
-import songdata from './songdata.json'
+import { getSongs } from './services'
 
 export default function App() {
+
+    const [songs, setSongs] = useState([])
+
+    useEffect(() => {
+      getSongs().then(setSongs)
+    }, [])
+
   return (
     <div>
-      {songdata.map(song => (
+      {songs.map(song => (
         <Song
           key={song._id}
           title={song.title}

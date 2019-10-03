@@ -7,32 +7,28 @@ import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { FileText2 } from 'styled-icons/icomoon/FileText2'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import { FileAudio } from 'styled-icons/fa-regular/FileAudio'
+import Lyrics from './Lyrics'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
-  lyrics: PropTypes.string,
-  tabs: PropTypes.string,
-  sound: PropTypes.string
+  lyrics: PropTypes.arrayOf(PropTypes.string),
+  tabs: PropTypes.arrayOf(PropTypes.string),
+  sound: PropTypes.array
 }
 
 Song.defaultProps = {
   title: '(No title)'
 }
 
-export default function Song({ key, title, lyrics, tabs, sounds }) {
+export default function Song({ title, lyrics, tabs, sounds }) {
   const [isSongContentVisible, setIsSongContentVisible] = useState(false)
   const [isButtonActive, setIsButtonActive] = useState(false)
-  const [areTextFilesVisible, setAreTextFilesVisible] = useState(false)
   const [areTabFilesVisible, setAreTabFilesVisible] = useState(false)
   const [areAudioFilesVisible, setAreAudioFilesVisible] = useState(false)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
     setIsSongContentVisible(!isSongContentVisible)
-  }
-
-  function toggleTextFiles() {
-    setAreTextFilesVisible(!areTextFilesVisible)
   }
 
   function toggleTabFiles() {
@@ -55,15 +51,11 @@ export default function Song({ key, title, lyrics, tabs, sounds }) {
       </ToggleButtonStyled>
       {isSongContentVisible && (
         <section>
-          <TextFileStyled onClick={toggleTextFiles}></TextFileStyled>
-          {areTextFilesVisible && (
-            <p>
-              {lyrics.split('/&').map(line => (
-                <li>{line}</li>
-              ))}
-            </p>
-          )}
+          {lyrics.map(text => (
+            <Lyrics text={text}> </Lyrics>
+          ))}
 
+          {/* 
           <TabFileStyled onClick={toggleTabFiles}></TabFileStyled>
           {areTabFilesVisible && (
             <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
@@ -74,7 +66,7 @@ export default function Song({ key, title, lyrics, tabs, sounds }) {
             <p>
               <AudioPlayer src={require('' + sounds)} />
             </p>
-          )}
+          )} */}
         </section>
       )}
     </SongStyled>
@@ -104,11 +96,6 @@ const DownArrowStyled = styled(DownArrow)`
   color: green;
 `
 const UpArrowStyled = styled(UpArrow)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-const TextFileStyled = styled(FileText2)`
   height: 50px;
   width: 50px;
   color: green;

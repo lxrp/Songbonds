@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Song from './Song'
+import Song from './components/Song'
 import { getSongs } from './services'
 
 export default function App() {
+  const [songs, setSongs] = useState([])
 
-    const [songs, setSongs] = useState([])
-
-    useEffect(() => {
-      getSongs().then(setSongs)
-    }, [])
+  useEffect(() => {
+    getSongs().then(setSongs)
+  }, [])
 
   return (
     <div>

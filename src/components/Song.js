@@ -1,19 +1,17 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import PropTypes from 'prop-types'
-import AudioPlayer from 'react-h5-audio-player'
-import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
-import { FileText2 } from 'styled-icons/icomoon/FileText2'
-import { Guitar } from 'styled-icons/fa-solid/Guitar'
-import { FileAudio } from 'styled-icons/fa-regular/FileAudio'
+import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
 import Lyrics from './Lyrics'
+import Sounds from './Sounds'
+import Tabs from './Tabs'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
   lyrics: PropTypes.arrayOf(PropTypes.string),
   tabs: PropTypes.arrayOf(PropTypes.string),
-  sound: PropTypes.array
+  sound: PropTypes.arrayOf(PropTypes.string)
 }
 
 Song.defaultProps = {
@@ -23,20 +21,10 @@ Song.defaultProps = {
 export default function Song({ title, lyrics, tabs, sounds }) {
   const [isSongContentVisible, setIsSongContentVisible] = useState(false)
   const [isButtonActive, setIsButtonActive] = useState(false)
-  const [areTabFilesVisible, setAreTabFilesVisible] = useState(false)
-  const [areAudioFilesVisible, setAreAudioFilesVisible] = useState(false)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
     setIsSongContentVisible(!isSongContentVisible)
-  }
-
-  function toggleTabFiles() {
-    setAreTabFilesVisible(!areTabFilesVisible)
-  }
-
-  function toggleAudioFiles() {
-    setAreAudioFilesVisible(!areAudioFilesVisible)
   }
 
   return (
@@ -49,24 +37,20 @@ export default function Song({ title, lyrics, tabs, sounds }) {
           <DownArrowStyled></DownArrowStyled>
         )}
       </ToggleButtonStyled>
+
       {isSongContentVisible && (
         <section>
           {lyrics.map(text => (
             <Lyrics text={text}> </Lyrics>
           ))}
 
-          {/* 
-          <TabFileStyled onClick={toggleTabFiles}></TabFileStyled>
-          {areTabFilesVisible && (
-            <p>{tabs && tabs.split('/&').map(line => <li>{line}</li>)}</p>
-          )}
+          {tabs.map(tab => (
+            <Tabs tab={tab}></Tabs>
+          ))}
 
-          <AudioFileStyled onClick={toggleAudioFiles}></AudioFileStyled>
-          {areAudioFilesVisible && (
-            <p>
-              <AudioPlayer src={require('' + sounds)} />
-            </p>
-          )} */}
+          {sounds.map(sounds => (
+            <Sounds sound={sounds}></Sounds>
+          ))}
         </section>
       )}
     </SongStyled>
@@ -96,17 +80,6 @@ const DownArrowStyled = styled(DownArrow)`
   color: green;
 `
 const UpArrowStyled = styled(UpArrow)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-
-const TabFileStyled = styled(Guitar)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-const AudioFileStyled = styled(FileAudio)`
   height: 50px;
   width: 50px;
   color: green;

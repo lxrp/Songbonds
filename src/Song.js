@@ -11,8 +11,8 @@ import Lyrics from './Lyrics'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
-  lyrics: PropTypes.array,
-  tabs: PropTypes.array,
+  lyrics: PropTypes.arrayOf(PropTypes.string),
+  tabs: PropTypes.arrayOf(PropTypes.string),
   sound: PropTypes.array
 }
 
@@ -51,7 +51,9 @@ export default function Song({ title, lyrics, tabs, sounds }) {
       </ToggleButtonStyled>
       {isSongContentVisible && (
         <section>
-          <Lyrics lyrics={lyrics}> </Lyrics>
+          {lyrics.map(text => (
+            <Lyrics text={text}> </Lyrics>
+          ))}
 
           {/* 
           <TabFileStyled onClick={toggleTabFiles}></TabFileStyled>

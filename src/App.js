@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import Song from './components/Song'
-import { getSongs } from './services'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import CreateSong from './components/CreateSong'
+import Homepage from './components/Homepage'
+import { getSongs } from './services'
 
 export default function App() {
   const [songs, setSongs] = useState([])
@@ -11,19 +12,13 @@ export default function App() {
   }, [])
 
   return (
-    <reactFragment>
-      <div>
-        {songs.map(song => (
-          <Song
-            key={song._id}
-            title={song.title}
-            lyrics={song.lyrics}
-            tabs={song.tabs}
-            sounds={song.sounds}
-          />
-        ))}
-      </div>
-      <CreateSong></CreateSong>
-    </reactFragment>
+    <Router>
+      <Route
+        exact
+        path="/"
+        render={() => <Homepage songs={songs}></Homepage>}
+      />
+      <Route exact path="/" render={() => <CreateSong></CreateSong>} />
+    </Router>
   )
 }

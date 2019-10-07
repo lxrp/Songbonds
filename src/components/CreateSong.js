@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { postSong } from '../services'
-import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
+import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
+import { postSong } from '../services'
 
 export default function CreateSong() {
   const [createSongActive, setCreateSongActive] = useState(false)

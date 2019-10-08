@@ -8,8 +8,12 @@ export default function App() {
   const [songs, setSongs] = useState([])
 
   useEffect(() => {
+    updateSongs()
+  }, [])
+
+  function updateSongs() {
     getSongs().then(setSongs)
-  }, [songs])
+  }
 
   return (
     <Router>
@@ -19,7 +23,7 @@ export default function App() {
         render={() => (
           <reactFragment>
             <Homepage songs={songs}></Homepage>
-            <CreateSong />
+            <CreateSong onCreate={updateSongs} />
           </reactFragment>
         )}
       />

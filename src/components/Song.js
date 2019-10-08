@@ -6,6 +6,7 @@ import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
 import Lyrics from './Lyrics'
 import Sounds from './Sounds'
 import Tabs from './Tabs'
+import AddFile from './AddFile'
 
 Song.propTypes = {
   title: PropTypes.string.isRequired,
@@ -51,6 +52,7 @@ export default function Song({ title, lyrics, tabs, sounds }) {
           {sounds.map(sounds => (
             <Sounds sound={sounds}></Sounds>
           ))}
+          <AddFile></AddFile>
         </section>
       )}
     </SongStyled>

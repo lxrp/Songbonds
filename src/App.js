@@ -19,7 +19,7 @@ export default function App() {
         render={() => (
           <reactFragment>
             <Homepage songs={songs}></Homepage>
-            <CreateSong></CreateSong>
+            <CreateSong />
           </reactFragment>
         )}
       />

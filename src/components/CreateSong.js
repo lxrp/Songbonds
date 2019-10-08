@@ -4,10 +4,10 @@ import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
 import { postSong } from '../services'
 
 export default function CreateSong({ updatePage }) {
-  const [createSongActive, setCreateSongActive] = useState(false)
+  const [isSongFormActive, setIsSongFormActive] = useState(false)
 
   function openSongForm() {
-    setCreateSongActive(!createSongActive)
+    setIsSongFormActive(!isSongFormActive)
   }
 
   function handleSubmit(event) {
@@ -26,17 +26,16 @@ export default function CreateSong({ updatePage }) {
     <section>
       <h3>add Song</h3>
       <CreateSongStyled onClick={openSongForm}></CreateSongStyled>
-      {createSongActive && (
+      {isSongFormActive && (
         <form onSubmit={handleSubmit}>
-          {createSongActive && (
-            <input
-              autoFocus
-              name="title"
-              type="text"
-              Placeholder="Songtitle"
-            ></input>
-          )}
-          <button> Create Song</button>
+          <input
+            autoFocus
+            name="title"
+            type="text"
+            Placeholder="Songtitle"
+          ></input>
+
+          <button>Create Song</button>
         </form>
       )}
     </section>

@@ -21,7 +21,6 @@ export default function HomePage({ songs }) {
 
 const HomePageStyled = styled.main`
   padding: 5px;
-  display: grid;
   align-content: flex-start;
   gap: 1px;
 `

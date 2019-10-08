@@ -9,16 +9,20 @@ export default function App() {
 
   useEffect(() => {
     getSongs().then(setSongs)
-  }, [])
+  }, [songs])
 
   return (
     <Router>
       <Route
         exact
         path="/"
-        render={() => <Homepage songs={songs}></Homepage>}
+        render={() => (
+          <reactFragment>
+            <Homepage songs={songs}></Homepage>
+            <CreateSong></CreateSong>
+          </reactFragment>
+        )}
       />
-      <Route exact path="/" render={() => <CreateSong></CreateSong>} />
     </Router>
   )
 }

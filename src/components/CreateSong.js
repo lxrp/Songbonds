@@ -31,7 +31,7 @@ export default function CreateSong({ onCreate }) {
             autoFocus
             name="title"
             type="text"
-            Placeholder="Songtitle"
+            placeholder="Songtitle"
           ></input>
 
           <button>Create Song</button>

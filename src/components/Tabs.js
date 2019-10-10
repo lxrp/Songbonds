@@ -4,22 +4,29 @@ import PropTypes from 'prop-types'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 
 Tabs.propTypes = {
-  tab: PropTypes.string
+  tab: PropTypes.object
 }
 
 export default function Tabs({ tab }) {
   const [areTabFilesVisible, setAreTabFilesVisible] = useState(false)
-  const tabFormated = tab.split('%').map(line => <li>{line}</li>)
+  const tabFormated = tab.content
+    .split('%')
+    .map((line, index) => <li key={index}>{line}</li>)
 
   function toggleTabFiles() {
     setAreTabFilesVisible(!areTabFilesVisible)
   }
 
   return (
-    <article>
+    <section>
       <TabFileStyled onClick={toggleTabFiles}></TabFileStyled>
-      {areTabFilesVisible && <p>{tabFormated}</p>}
-    </article>
+      {areTabFilesVisible && (
+        <React.Fragment>
+          <h4>{tab.subtitle}</h4>
+          <p>{tabFormated}</p>
+        </React.Fragment>
+      )}
+    </section>
   )
 }
 

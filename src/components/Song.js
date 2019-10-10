@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
@@ -8,18 +7,7 @@ import Sounds from './Sounds'
 import Tabs from './Tabs'
 import AddFile from './AddFile'
 
-Song.propTypes = {
-  title: PropTypes.string.isRequired,
-  lyrics: PropTypes.arrayOf(PropTypes.string),
-  tabs: PropTypes.arrayOf(PropTypes.string),
-  sound: PropTypes.arrayOf(PropTypes.string)
-}
-
-Song.defaultProps = {
-  title: '(No title)'
-}
-
-export default function Song({ title, lyrics, tabs, sounds }) {
+export default function Song({ id, title, lyrics, tabs, sounds }) {
   const [isSongContentVisible, setIsSongContentVisible] = useState(false)
   const [isButtonActive, setIsButtonActive] = useState(false)
 
@@ -41,18 +29,22 @@ export default function Song({ title, lyrics, tabs, sounds }) {
 
       {isSongContentVisible && (
         <section>
-          {lyrics.map(text => (
-            <Lyrics text={text}> </Lyrics>
+          {lyrics.map((text, index) => (
+            <Lyrics text={text} key={index}></Lyrics>
           ))}
 
-          {tabs.map(tab => (
-            <Tabs tab={tab}></Tabs>
+          {tabs.map((tab, index) => (
+            <Tabs tab={tab} key={index}></Tabs>
           ))}
-
-          {sounds.map(sounds => (
-            <Sounds sound={sounds}></Sounds>
+          {sounds.map((sounds, index) => (
+            <Sounds sound={sounds} key={index}></Sounds>
           ))}
-          <AddFile></AddFile>
+          <AddFile
+            id={id}
+            lyrics={lyrics}
+            tabs={tabs}
+            sounds={sounds}
+          ></AddFile>
         </section>
       )}
     </SongStyled>

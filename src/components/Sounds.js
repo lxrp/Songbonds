@@ -5,7 +5,7 @@ import AudioPlayer from 'react-h5-audio-player'
 import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 
 Sounds.propTypes = {
-  sound: PropTypes.string
+  sound: PropTypes.object
 }
 
 export default function Sounds({ sound }) {
@@ -15,10 +15,16 @@ export default function Sounds({ sound }) {
     setAreAudioFilesVisible(!areAudioFilesVisible)
   }
   return (
-    <article>
+    <section>
       <AudioFileStyled onClick={toggleAudioFiles}></AudioFileStyled>
-      {areAudioFilesVisible && <AudioPlayer src={require('' + sound)} />}
-    </article>
+      {areAudioFilesVisible && (
+        <React.Fragment>
+          <h4>{sound.subtitle}</h4>
+
+          <AudioPlayer src={require('' + sound.content)} />
+        </React.Fragment>
+      )}
+    </section>
   )
 }
 

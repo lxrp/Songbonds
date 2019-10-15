@@ -12,6 +12,9 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [isAddFileFormActive, setIsAddFileFormActive] = useState(false)
   const [isFormActive, setIsFormActive] = useState(false)
   const [renderForm, setRenderForm] = useState()
+  const [fileUrl, setFileUrl] = useState('')
+
+  console.log(fileUrl)
 
   function openFileForm() {
     setIsAddFileVisible(!isAddFileVisible)
@@ -53,7 +56,7 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
             )}
             <button>Add File</button>
           </form>
-          <UploadFile></UploadFile>
+          <UploadFile setFileUrl={setFileUrl}> </UploadFile>
         </React.Fragment>
       )
     })

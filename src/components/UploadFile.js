@@ -4,17 +4,12 @@ import axios from 'axios'
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
 
-export default function UploadFile({ onSubmit }) {
+export default function UploadFile({ setFileUrl }) {
   function handleSubmit(event) {
     event.preventDefault()
     const formData = new FormData(event.target)
-    let data = Object.fromEntries(formData)
-
-    upload(formData.get('file'))
-      .then(response => {
-        data.file = response.data.url
-      })
-      .catch(err => console.log(err))
+    let fileToUpload = formData.get('file')
+    upload(fileToUpload)
   }
 
   function upload(file) {
@@ -29,8 +24,12 @@ export default function UploadFile({ onSubmit }) {
           'Content-type': 'multipart/form-data'
         }
       })
-      .then(console.log('Uploaded!'))
+      .then(onFileSave)
       .catch(err => console.error(err))
+  }
+
+  function onFileSave(response) {
+    setFileUrl(response.data.url)
   }
 
   return (

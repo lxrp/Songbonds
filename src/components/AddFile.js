@@ -6,43 +6,50 @@ import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import { FileText } from 'styled-icons/icomoon/FileText'
 import { patchSong } from '../services'
 
-export default function AddFile({ id, lyrics, tabs, sounds }) {
+export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
   const [isAddFileFormActive, setIsAddFileFormActive] = useState(false)
   const [isFormActive, setIsFormActive] = useState(false)
-  const [chosenForm, setChosenForm] = useState()
+  const [renderForm, setRenderForm] = useState()
 
   function openFileForm() {
     setIsAddFileVisible(!isAddFileVisible)
     setIsAddFileFormActive(!isAddFileFormActive)
   }
 
-  function AddLyric() {
+  function submitFile(event) {
     setIsAddFileFormActive(!isAddFileFormActive)
     setIsFormActive(!isFormActive)
-    setChosenForm(() => {
+
+    const dataType = event.currentTarget.getAttribute('name')
+
+    setRenderForm(() => {
       return (
         <React.Fragment>
-          <h3>Add Lyrics</h3>
-          <form onSubmit={handleSubmit}>
+          <h3>
+            New
+            {' ' + dataType.slice(3)}
+          </h3>
+          <form type={dataType} onSubmit={handleSubmit}>
             <label>
               {' '}
-              Subtitle for lyrics:
+              Name your new {' ' + dataType.slice(3)}-File:
               <input
                 autoFocus
                 name="subtitle"
                 type="text"
-                placeholder="Songtitle"
+                placeholder="subtitle"
               ></input>
             </label>
-            <label>
-              <textarea
-                name="content"
-                rows="10"
-                placeholder="Place your lyrics here!"
-              ></textarea>
-              Type % for a line break
-            </label>
+            {dataType !== 'newSound' && (
+              <label>
+                <textarea
+                  name="content"
+                  rows="10"
+                  placeholder="Place your text here!"
+                ></textarea>
+              </label>
+            )}
             <button>Add File</button>
           </form>
         </React.Fragment>
@@ -50,38 +57,37 @@ export default function AddFile({ id, lyrics, tabs, sounds }) {
     })
   }
 
-  function AddTab() {
-    setIsAddFileFormActive(!isAddFileFormActive)
-    setIsFormActive(!isFormActive)
-    setChosenForm(() => {
-      return <h3>Add Tab</h3>
-    })
-  }
-
-  function AddSound() {
-    setIsAddFileFormActive(!isAddFileFormActive)
-    setIsFormActive(!isFormActive)
-    setChosenForm(() => {
-      return <h3>Add Sound</h3>
-    })
-  }
-
   function handleSubmit(event) {
     event.preventDefault()
+    const type = event.currentTarget.getAttribute('type')
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
-    addFile(data)
+    patchFile(data, type)
+    setRenderForm()
+    openFileForm()
   }
 
-  function addFile(data) {
-    lyrics = [...lyrics, data]
-    console.log(lyrics)
-    const lyricsToPatch = {
-      lyrics: lyrics
-    }
-    patchSong(id, lyricsToPatch)
+  function patchFile(data, type) {
+    let FileToPatch
 
-    console.log(lyrics)
+    if (type === 'newLyrics') {
+      lyrics = [...lyrics, data]
+      FileToPatch = {
+        lyrics: lyrics
+      }
+    } else if (type === 'newTab') {
+      tabs = [...tabs, data]
+      FileToPatch = {
+        tabs: tabs
+      }
+    } else {
+      sounds = [...sounds, data]
+      FileToPatch = {
+        sounds: sounds
+      }
+    }
+
+    patchSong(id, FileToPatch).then(updateSongs)
   }
 
   return (
@@ -95,13 +101,16 @@ export default function AddFile({ id, lyrics, tabs, sounds }) {
       {isAddFileFormActive && (
         <div>
           <h2>Choose Filetype:</h2>
-          <AddLyricStyled onClick={AddLyric}></AddLyricStyled>
-          <AddTabStyled onClick={AddTab}></AddTabStyled>
-          <AddSoundStyled onClick={AddSound}></AddSoundStyled>
+          <AddLyricStyled
+            name="newLyrics"
+            onClick={submitFile}
+          ></AddLyricStyled>
+          <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
+          <AddSoundStyled name="newSound" onClick={submitFile}></AddSoundStyled>
           <button onClick={openFileForm}>Cancel</button>
         </div>
       )}
-      {chosenForm}
+      {renderForm}
     </section>
   )
 }

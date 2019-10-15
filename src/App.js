@@ -22,7 +22,7 @@ export default function App() {
         path="/"
         render={() => (
           <React.Fragment>
-            <Homepage songs={songs}></Homepage>
+            <Homepage updateSongs={updateSongs} songs={songs}></Homepage>
             <CreateSong onCreate={updateSongs} />
           </React.Fragment>
         )}

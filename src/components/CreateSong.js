@@ -15,6 +15,7 @@ export default function CreateSong({ onCreate }) {
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
     createSong(data)
+    openSongForm()
   }
 
   function createSong({ title }) {

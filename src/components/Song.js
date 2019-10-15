@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
-import Lyrics from './Lyrics'
-import Sounds from './Sounds'
-import Tabs from './Tabs'
 import AddFile from './AddFile'
+import SongContent from './SongContent'
 
-export default function Song({ id, title, lyrics, tabs, sounds }) {
-  const [isSongContentVisible, setIsSongContentVisible] = useState(false)
-  const [isButtonActive, setIsButtonActive] = useState(false)
+export default function Song({ id, title, lyrics, tabs, sounds, updateSongs }) {
+  let [isSongContentVisible, setIsSongContentVisible] = useState(false)
+  let [isButtonActive, setIsButtonActive] = useState(false)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
@@ -30,20 +28,22 @@ export default function Song({ id, title, lyrics, tabs, sounds }) {
       {isSongContentVisible && (
         <section>
           {lyrics.map((text, index) => (
-            <Lyrics text={text} key={index}></Lyrics>
+            <SongContent type="lyrics" text={text} key={index}>
+              {' '}
+            </SongContent>
           ))}
-
           {tabs.map((tab, index) => (
-            <Tabs tab={tab} key={index}></Tabs>
+            <SongContent type="tab" tab={tab} key={index}></SongContent>
           ))}
           {sounds.map((sounds, index) => (
-            <Sounds sound={sounds} key={index}></Sounds>
+            <SongContent type="sound" sound={sounds} key={index}></SongContent>
           ))}
           <AddFile
             id={id}
             lyrics={lyrics}
             tabs={tabs}
             sounds={sounds}
+            updateSongs={updateSongs}
           ></AddFile>
         </section>
       )}

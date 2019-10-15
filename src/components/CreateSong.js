@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
 import { postSong } from '../services'
 
-export default function CreateSong({ updatePage }) {
+export default function CreateSong({ onCreate }) {
   const [isSongFormActive, setIsSongFormActive] = useState(false)
 
   function openSongForm() {
@@ -15,11 +15,11 @@ export default function CreateSong({ updatePage }) {
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
     createSong(data)
-    return { updatePage }
+    openSongForm()
   }
 
   function createSong({ title }) {
-    postSong({ title: title }).then(() => updatePage)
+    postSong({ title: title }).then(onCreate)
   }
 
   return (
@@ -32,7 +32,7 @@ export default function CreateSong({ updatePage }) {
             autoFocus
             name="title"
             type="text"
-            Placeholder="Songtitle"
+            placeholder="Songtitle"
           ></input>
 
           <button>Create Song</button>

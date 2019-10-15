@@ -1,26 +1,13 @@
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
-import Lyrics from './Lyrics'
-import Sounds from './Sounds'
-import Tabs from './Tabs'
+import AddFile from './AddFile'
+import SongContent from './SongContent'
 
-Song.propTypes = {
-  title: PropTypes.string.isRequired,
-  lyrics: PropTypes.arrayOf(PropTypes.string),
-  tabs: PropTypes.arrayOf(PropTypes.string),
-  sound: PropTypes.arrayOf(PropTypes.string)
-}
-
-Song.defaultProps = {
-  title: '(No title)'
-}
-
-export default function Song({ title, lyrics, tabs, sounds }) {
-  const [isSongContentVisible, setIsSongContentVisible] = useState(false)
-  const [isButtonActive, setIsButtonActive] = useState(false)
+export default function Song({ id, title, lyrics, tabs, sounds, updateSongs }) {
+  let [isSongContentVisible, setIsSongContentVisible] = useState(false)
+  let [isButtonActive, setIsButtonActive] = useState(false)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
@@ -40,17 +27,24 @@ export default function Song({ title, lyrics, tabs, sounds }) {
 
       {isSongContentVisible && (
         <section>
-          {lyrics.map(text => (
-            <Lyrics text={text}> </Lyrics>
+          {lyrics.map((text, index) => (
+            <SongContent type="lyrics" text={text} key={index}>
+              {' '}
+            </SongContent>
           ))}
-
-          {tabs.map(tab => (
-            <Tabs tab={tab}></Tabs>
+          {tabs.map((tab, index) => (
+            <SongContent type="tab" tab={tab} key={index}></SongContent>
           ))}
-
-          {sounds.map(sounds => (
-            <Sounds sound={sounds}></Sounds>
+          {sounds.map((sounds, index) => (
+            <SongContent type="sound" sound={sounds} key={index}></SongContent>
           ))}
+          <AddFile
+            id={id}
+            lyrics={lyrics}
+            tabs={tabs}
+            sounds={sounds}
+            updateSongs={updateSongs}
+          ></AddFile>
         </section>
       )}
     </SongStyled>

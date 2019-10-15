@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
 })
 
 router.patch('/:id', (req, res) => {
-  Song.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Song.findByIdAndUpdate(req.params.id, req.body)
     .then(song => res.json(song))
     .catch(err => res.json(err))
 })

@@ -1,11 +1,12 @@
 {
-  "name": "Songbonds",
+  "name": "songbonds",
   "author": "Alexander Arp <alexanderarp@yahoo.de> ",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3333",
   "dependencies": {
     "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
     "cloudinary-react": "^1.2.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",

@@ -5,6 +5,7 @@ import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import { FileText } from 'styled-icons/icomoon/FileText'
 import { patchSong } from '../services'
+import UploadFile from './UploadFile'
 
 export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
@@ -52,6 +53,7 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
             )}
             <button>Add File</button>
           </form>
+          <UploadFile></UploadFile>
         </React.Fragment>
       )
     })

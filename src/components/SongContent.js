@@ -28,7 +28,12 @@ export default function SongContent({ type, text, tab, sound }) {
         {areFilesVisible && (
           <React.Fragment>
             <h4>{text.subtitle}</h4>
-            <p>{textFormated}</p>
+
+            {text.isUploadedFile ? (
+              <img src={text.content} alt="" />
+            ) : (
+              <p>{textFormated}</p>
+            )}
           </React.Fragment>
         )}
       </section>
@@ -43,7 +48,12 @@ export default function SongContent({ type, text, tab, sound }) {
         {areFilesVisible && (
           <React.Fragment>
             <h4>{tab.subtitle}</h4>
-            <p>{tabFormated}</p>
+
+            {tab.isUploadedFile ? (
+              <img src={tab.content} alt="" />
+            ) : (
+              <p>{tabFormated}</p>
+            )}
           </React.Fragment>
         )}
       </section>
@@ -55,7 +65,7 @@ export default function SongContent({ type, text, tab, sound }) {
         {areFilesVisible && (
           <React.Fragment>
             <h4>{sound.subtitle}</h4>
-            <AudioPlayer src={require('' + sound.content)} />
+            <AudioPlayer src={sound.content} />
           </React.Fragment>
         )}
       </section>

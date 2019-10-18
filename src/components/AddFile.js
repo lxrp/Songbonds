@@ -1,60 +1,45 @@
-import React, { useState } from 'react'
-import styled from 'styled-components/macro'
-import { FilePlus } from 'styled-icons/boxicons-solid/FilePlus'
-import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
-import { Guitar } from 'styled-icons/fa-solid/Guitar'
-import { FileText } from 'styled-icons/icomoon/FileText'
+import React, { useEffect, useState } from 'react'
 import { patchSong } from '../services'
+import ChooseFileTypeForm from './ChooseFileTypeForm'
+import UploadFile from './UploadFile'
 
 export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
-  const [isAddFileFormActive, setIsAddFileFormActive] = useState(false)
+  const [fileType, setFileType] = useState()
   const [isFormActive, setIsFormActive] = useState(false)
-  const [renderForm, setRenderForm] = useState()
+  const [isUploadFormActive, setIsUploadFormActive] = useState(false)
+  const [subtitle, setSubtitle] = useState('')
+  const [fileUrl, setFileUrl] = useState('')
+  const [isUploadedFile, setIsUploadedFile] = useState(false)
 
-  function openFileForm() {
-    setIsAddFileVisible(!isAddFileVisible)
-    setIsAddFileFormActive(!isAddFileFormActive)
+  useEffect(() => {
+    setUrl()
+  }, [fileUrl])
+
+  function toggleFileUpload() {
+    setIsUploadFormActive(!isUploadFormActive)
+    setIsUploadedFile(!isUploadedFile)
   }
 
-  function submitFile(event) {
-    setIsAddFileFormActive(!isAddFileFormActive)
+  function cancel() {
+    setIsAddFileVisible(true)
+    setIsFormActive(false)
+    setIsUploadFormActive(false)
+    setIsUploadedFile(false)
+  }
+
+  function setUrl() {
+    const data = {
+      subtitle: subtitle,
+      content: fileUrl,
+      isUploadedFile: isUploadedFile
+    }
+    patchFile(data, fileType)
+  }
+
+  function toggleForm() {
     setIsFormActive(!isFormActive)
-
-    const dataType = event.currentTarget.getAttribute('name')
-
-    setRenderForm(() => {
-      return (
-        <React.Fragment>
-          <h3>
-            New
-            {' ' + dataType.slice(3)}
-          </h3>
-          <form type={dataType} onSubmit={handleSubmit}>
-            <label>
-              {' '}
-              Name your new {' ' + dataType.slice(3)}-File:
-              <input
-                autoFocus
-                name="subtitle"
-                type="text"
-                placeholder="subtitle"
-              ></input>
-            </label>
-            {dataType !== 'newSound' && (
-              <label>
-                <textarea
-                  name="content"
-                  rows="10"
-                  placeholder="Place your text here!"
-                ></textarea>
-              </label>
-            )}
-            <button>Add File</button>
-          </form>
-        </React.Fragment>
-      )
-    })
+    setIsAddFileVisible(!isAddFileVisible)
   }
 
   function handleSubmit(event) {
@@ -62,9 +47,9 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
     const type = event.currentTarget.getAttribute('type')
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
-    patchFile(data, type)
-    setRenderForm()
-    openFileForm()
+    const newData = { ...data, isUploadedFile: isUploadedFile }
+    patchFile(newData, type)
+    toggleForm()
   }
 
   function patchFile(data, type) {
@@ -80,7 +65,7 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
       FileToPatch = {
         tabs: tabs
       }
-    } else {
+    } else if (type === 'newSound') {
       sounds = [...sounds, data]
       FileToPatch = {
         sounds: sounds
@@ -91,47 +76,56 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   }
 
   return (
-    <section>
-      {isAddFileVisible && (
-        <div>
-          <h3>add File</h3>
-          <AddFileStyled onClick={openFileForm}></AddFileStyled>
-        </div>
+    <React.Fragment>
+      <ChooseFileTypeForm
+        setFileType={setFileType}
+        setIsFormActive={setIsFormActive}
+        setIsAddFileVisible={setIsAddFileVisible}
+        isAddFileVisible={isAddFileVisible}
+      ></ChooseFileTypeForm>
+      {isFormActive && (
+        <React.Fragment>
+          <h3>
+            New
+            {' ' + fileType.slice(3)}
+          </h3>
+          {fileType !== 'newSound' && !isUploadFormActive && (
+            <form type={fileType} onSubmit={handleSubmit}>
+              <label>
+                {' '}
+                Name your new {' ' + fileType.slice(3)}-File:
+                <input
+                  autoFocus
+                  name="subtitle"
+                  type="text"
+                  placeholder="subtitle"
+                ></input>
+              </label>
+              <label>
+                <textarea
+                  name="content"
+                  rows="10"
+                  placeholder="Place your text here!"
+                ></textarea>
+              </label>
+              <button>Add File</button>
+              <button onClick={toggleFileUpload}>upload Image</button>
+            </form>
+          )}
+
+          {(fileType === 'newSound' || isUploadFormActive) && (
+            <UploadFile
+              setFileUrl={setFileUrl}
+              setSubtitle={setSubtitle}
+              onUpload={toggleForm}
+            >
+              {' '}
+            </UploadFile>
+          )}
+
+          <button onClick={cancel}>Cancel</button>
+        </React.Fragment>
       )}
-      {isAddFileFormActive && (
-        <div>
-          <h2>Choose Filetype:</h2>
-          <AddLyricStyled
-            name="newLyrics"
-            onClick={submitFile}
-          ></AddLyricStyled>
-          <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
-          <AddSoundStyled name="newSound" onClick={submitFile}></AddSoundStyled>
-          <button onClick={openFileForm}>Cancel</button>
-        </div>
-      )}
-      {renderForm}
-    </section>
+    </React.Fragment>
   )
 }
-
-const AddFileStyled = styled(FilePlus)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-const AddLyricStyled = styled(FileText)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-const AddTabStyled = styled(Guitar)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`
-const AddSoundStyled = styled(FileAudio)`
-  height: 50px;
-  width: 50px;
-  color: green;
-`

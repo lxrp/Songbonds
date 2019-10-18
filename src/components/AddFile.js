@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { patchSong } from '../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
@@ -7,14 +7,65 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
   const [fileType, setFileType] = useState()
   const [isFormActive, setIsFormActive] = useState(false)
-  const [fileUrl, setFileUrl] = useState('')
   const [isUploadFormActive, setIsUploadFormActive] = useState(false)
+  const [isUploadActive, setIsUploadActive] = useState(false)
+  const [subtitle, setSubtitle] = useState('')
+  const [fileUrl, setFileUrl] = useState('')
 
-  console.log(fileUrl)
-  console.log(fileType)
+  useEffect(() => {
+    setUrl()
+  }, [fileUrl])
 
   function toggleFileUpload() {
     setIsUploadFormActive(!isUploadFormActive)
+  }
+
+  function cancel() {
+    setIsAddFileVisible(true)
+    setIsFormActive(false)
+    setIsUploadFormActive(false)
+  }
+
+  function setUrl() {
+    const data = { subtitle: subtitle, content: fileUrl }
+    patchFile(data, fileType)
+  }
+
+  function toggleForm() {
+    setIsFormActive(!isFormActive)
+    setIsAddFileVisible(!isAddFileVisible)
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    const type = event.currentTarget.getAttribute('type')
+    const formData = new FormData(event.target)
+    let data = Object.fromEntries(formData)
+    patchFile(data, type)
+    toggleForm()
+  }
+
+  function patchFile(data, type) {
+    let FileToPatch
+
+    if (type === 'newLyrics') {
+      lyrics = [...lyrics, data]
+      FileToPatch = {
+        lyrics: lyrics
+      }
+    } else if (type === 'newTab') {
+      tabs = [...tabs, data]
+      FileToPatch = {
+        tabs: tabs
+      }
+    } else if (type === 'newSound') {
+      sounds = [...sounds, data]
+      FileToPatch = {
+        sounds: sounds
+      }
+    }
+
+    patchSong(id, FileToPatch).then(updateSongs)
   }
 
   return (
@@ -31,18 +82,18 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
             New
             {' ' + fileType.slice(3)}
           </h3>
-          <form type={fileType} onSubmit={handleSubmit}>
-            <label>
-              {' '}
-              Name your new {' ' + fileType.slice(3)}-File:
-              <input
-                autoFocus
-                name="subtitle"
-                type="text"
-                placeholder="subtitle"
-              ></input>
-            </label>
-            {fileType !== 'newSound' && (
+          {fileType !== 'newSound' && !isUploadFormActive && (
+            <form type={fileType} onSubmit={handleSubmit}>
+              <label>
+                {' '}
+                Name your new {' ' + fileType.slice(3)}-File:
+                <input
+                  autoFocus
+                  name="subtitle"
+                  type="text"
+                  placeholder="subtitle"
+                ></input>
+              </label>
               <label>
                 <textarea
                   name="content"
@@ -50,49 +101,24 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
                   placeholder="Place your text here!"
                 ></textarea>
               </label>
-            )}
-            <button>Add File</button>
-          </form>
-          <button onClick={toggleFileUpload}>upload Image</button>
+              <button>Add File</button>
+              <button onClick={toggleFileUpload}>upload Image</button>
+            </form>
+          )}
 
           {(fileType === 'newSound' || isUploadFormActive) && (
-            <UploadFile setFileUrl={setFileUrl}> </UploadFile>
+            <UploadFile
+              setFileUrl={setFileUrl}
+              setSubtitle={setSubtitle}
+              onUpload={toggleForm}
+            >
+              {' '}
+            </UploadFile>
           )}
+
+          <button onClick={cancel}>Cancel</button>
         </React.Fragment>
       )}
     </React.Fragment>
   )
-
-  function handleSubmit(event) {
-    event.preventDefault()
-    const type = event.currentTarget.getAttribute('type')
-    const formData = new FormData(event.target)
-    let data = Object.fromEntries(formData)
-    patchFile(data, type)
-    setIsFormActive(!isFormActive)
-    setIsAddFileVisible(!isAddFileVisible)
-  }
-
-  function patchFile(data, type) {
-    let FileToPatch
-
-    if (type === 'newLyrics') {
-      lyrics = [...lyrics, data]
-      FileToPatch = {
-        lyrics: lyrics
-      }
-    } else if (type === 'newTab') {
-      tabs = [...tabs, data]
-      FileToPatch = {
-        tabs: tabs
-      }
-    } else {
-      sounds = [...sounds, data]
-      FileToPatch = {
-        sounds: sounds
-      }
-    }
-
-    patchSong(id, FileToPatch).then(updateSongs)
-  }
 }

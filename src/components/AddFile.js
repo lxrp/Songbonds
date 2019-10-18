@@ -8,9 +8,9 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
   const [fileType, setFileType] = useState()
   const [isFormActive, setIsFormActive] = useState(false)
   const [isUploadFormActive, setIsUploadFormActive] = useState(false)
-  const [isUploadActive, setIsUploadActive] = useState(false)
   const [subtitle, setSubtitle] = useState('')
   const [fileUrl, setFileUrl] = useState('')
+  const [isUploadedFile, setIsUploadedFile] = useState(false)
 
   useEffect(() => {
     setUrl()
@@ -18,16 +18,22 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
 
   function toggleFileUpload() {
     setIsUploadFormActive(!isUploadFormActive)
+    setIsUploadedFile(!isUploadedFile)
   }
 
   function cancel() {
     setIsAddFileVisible(true)
     setIsFormActive(false)
     setIsUploadFormActive(false)
+    setIsUploadedFile(false)
   }
 
   function setUrl() {
-    const data = { subtitle: subtitle, content: fileUrl }
+    const data = {
+      subtitle: subtitle,
+      content: fileUrl,
+      isUploadedFile: isUploadedFile
+    }
     patchFile(data, fileType)
   }
 
@@ -41,7 +47,8 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
     const type = event.currentTarget.getAttribute('type')
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
-    patchFile(data, type)
+    const newData = { ...data, isUploadedFile: isUploadedFile }
+    patchFile(newData, type)
     toggleForm()
   }
 

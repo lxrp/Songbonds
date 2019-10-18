@@ -41,8 +41,6 @@ export default function UploadFile({ setFileUrl, setSubtitle, onUpload }) {
     onUpload()
   }
 
-  console.log(isUploadActive)
-
   return isUploadActive ? (
     <div>
       <h1>loading</h1> <img src={loading} alt="Upload" />

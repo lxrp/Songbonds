@@ -1,22 +1,31 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
+import DeleteSong from './DeleteSong'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
+import { Edit } from 'styled-icons/fa-regular/Edit'
+
 import AddFile from './AddFile'
 import SongContent from './SongContent'
 
-export default function Song({ id, title, lyrics, tabs, sounds, updateSongs }) {
-  let [isSongContentVisible, setIsSongContentVisible] = useState(false)
-  let [isButtonActive, setIsButtonActive] = useState(false)
+export default function Song({ id, content, updateSongs }) {
+  const [isSongContentVisible, setIsSongContentVisible] = useState(false)
+  const [isButtonActive, setIsButtonActive] = useState(false)
+  const [isEditButtonActive, setIsEditButtonActive] = useState(false)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
     setIsSongContentVisible(!isSongContentVisible)
   }
 
+  function onClickEditButton() {
+    setIsEditButtonActive(!isEditButtonActive)
+  }
+
   return (
     <SongStyled>
-      <h2>{title}</h2>
+      <h2>{content.title}</h2>
+      <EditButtonStyled onClick={onClickEditButton}></EditButtonStyled>
       <ToggleButtonStyled onClick={onClickToggleButton} active={isButtonActive}>
         {isButtonActive ? (
           <UpArrowStyled></UpArrowStyled>
@@ -27,24 +36,51 @@ export default function Song({ id, title, lyrics, tabs, sounds, updateSongs }) {
 
       {isSongContentVisible && (
         <section>
-          {lyrics.map((text, index) => (
-            <SongContent type="lyrics" text={text} key={index}>
+          {content.lyrics.map((lyrics, index) => (
+            <SongContent
+              id={id}
+              type="lyrics"
+              lyrics={lyrics}
+              key={index}
+              content={content}
+              isEditButtonActive={isEditButtonActive}
+              updateSongs={updateSongs}
+            >
               {' '}
             </SongContent>
           ))}
-          {tabs.map((tab, index) => (
-            <SongContent type="tab" tab={tab} key={index}></SongContent>
+          {content.tabs.map((tab, index) => (
+            <SongContent
+              id={id}
+              type="tab"
+              tab={tab}
+              key={index}
+              content={content}
+              isEditButtonActive={isEditButtonActive}
+              updateSongs={updateSongs}
+            ></SongContent>
           ))}
-          {sounds.map((sounds, index) => (
-            <SongContent type="sound" sound={sounds} key={index}></SongContent>
+          {content.sounds.map((sounds, index) => (
+            <SongContent
+              id={id}
+              type="sound"
+              sound={sounds}
+              key={index}
+              content={content}
+              isEditButtonActive={isEditButtonActive}
+              updateSongs={updateSongs}
+            ></SongContent>
           ))}
-          <AddFile
-            id={id}
-            lyrics={lyrics}
-            tabs={tabs}
-            sounds={sounds}
-            updateSongs={updateSongs}
-          ></AddFile>
+          {isEditButtonActive && (
+            <React.Fragment>
+              <AddFile
+                id={id}
+                content={content}
+                updateSongs={updateSongs}
+              ></AddFile>
+              <DeleteSong id={id} updateSongs={updateSongs}></DeleteSong>
+            </React.Fragment>
+          )}
         </section>
       )}
     </SongStyled>
@@ -74,6 +110,11 @@ const DownArrowStyled = styled(DownArrow)`
   color: green;
 `
 const UpArrowStyled = styled(UpArrow)`
+  height: 50px;
+  width: 50px;
+  color: green;
+`
+const EditButtonStyled = styled(Edit)`
   height: 50px;
   width: 50px;
   color: green;

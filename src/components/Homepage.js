@@ -10,10 +10,7 @@ export default function HomePage({ songs, updateSongs }) {
         <Song
           key={song._id}
           id={song._id}
-          title={song.title}
-          lyrics={song.lyrics}
-          tabs={song.tabs}
-          sounds={song.sounds}
+          content={song}
           updateSongs={updateSongs}
         />
       ))}

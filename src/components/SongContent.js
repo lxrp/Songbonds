@@ -5,12 +5,22 @@ import styled from 'styled-components/macro'
 import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import { FileText } from 'styled-icons/icomoon/FileText'
+import DeleteContent from './DeleteContent'
 
 SongContent.propTypes = {
-  text: PropTypes.object
+  lyrics: PropTypes.object
 }
 
-export default function SongContent({ type, text, tab, sound }) {
+export default function SongContent({
+  id,
+  type,
+  content,
+  lyrics,
+  tab,
+  sound,
+  isEditButtonActive,
+  updateSongs
+}) {
   const [areFilesVisible, setAreFilesVisible] = useState(false)
 
   function toggleFiles() {
@@ -18,21 +28,30 @@ export default function SongContent({ type, text, tab, sound }) {
   }
 
   if (type === 'lyrics') {
-    const textFormated = text.content
+    const lyricsFormated = lyrics.content
       .split('%')
       .map((line, index) => <li key={index}>{line}</li>)
 
     return (
       <section>
-        <TextFileStyled onClick={toggleFiles}></TextFileStyled>
+        {isEditButtonActive && (
+          <DeleteContent
+            id={id}
+            content={content}
+            lyrics={lyrics}
+            updateSongs={updateSongs}
+          ></DeleteContent>
+        )}
+        <LyricsFileStyled onClick={toggleFiles}></LyricsFileStyled>
+
+        <h4>{lyrics.subtitle}</h4>
+
         {areFilesVisible && (
           <React.Fragment>
-            <h4>{text.subtitle}</h4>
-
-            {text.isUploadedFile ? (
-              <img src={text.content} alt="" />
+            {lyrics.isUploadedFile ? (
+              <img src={lyrics.content} alt="" />
             ) : (
-              <p>{textFormated}</p>
+              <p>{lyricsFormated}</p>
             )}
           </React.Fragment>
         )}
@@ -44,11 +63,20 @@ export default function SongContent({ type, text, tab, sound }) {
       .map((line, index) => <li key={index}>{line}</li>)
     return (
       <section>
+        {isEditButtonActive && (
+          <DeleteContent
+            id={id}
+            content={content}
+            tab={tab}
+            updateSongs={updateSongs}
+          ></DeleteContent>
+        )}
         <TabFileStyled onClick={toggleFiles}></TabFileStyled>
+
+        <h4>{tab.subtitle}</h4>
+
         {areFilesVisible && (
           <React.Fragment>
-            <h4>{tab.subtitle}</h4>
-
             {tab.isUploadedFile ? (
               <img src={tab.content} alt="" />
             ) : (
@@ -61,10 +89,19 @@ export default function SongContent({ type, text, tab, sound }) {
   } else {
     return (
       <section>
+        {isEditButtonActive && (
+          <DeleteContent
+            id={id}
+            content={content}
+            sound={sound}
+            updateSongs={updateSongs}
+          ></DeleteContent>
+        )}
         <AudioFileStyled onClick={toggleFiles}></AudioFileStyled>
+        <h4>{sound.subtitle}</h4>
+
         {areFilesVisible && (
           <React.Fragment>
-            <h4>{sound.subtitle}</h4>
             <AudioPlayer src={sound.content} />
           </React.Fragment>
         )}
@@ -73,7 +110,7 @@ export default function SongContent({ type, text, tab, sound }) {
   }
 }
 
-const TextFileStyled = styled(FileText)`
+const LyricsFileStyled = styled(FileText)`
   height: 50px;
   width: 50px;
   color: green;

@@ -43,7 +43,8 @@ export default function UploadFile({ setFileUrl, setSubtitle, onUpload }) {
 
   return isUploadActive ? (
     <div>
-      <h1>loading</h1> <img src={loading} alt="Upload" />
+      <h3>File upload in progress. Please wait...</h3>{' '}
+      <img src={loading} alt="Upload" />
     </div>
   ) : (
     <form onSubmit={handleSubmit}>

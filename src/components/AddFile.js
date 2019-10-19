@@ -3,7 +3,7 @@ import { patchSong } from '../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
 
-export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
+export default function AddFile({ id, content, updateSongs }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
   const [fileType, setFileType] = useState()
   const [isFormActive, setIsFormActive] = useState(false)
@@ -56,19 +56,19 @@ export default function AddFile({ id, lyrics, tabs, sounds, updateSongs }) {
     let FileToPatch
 
     if (type === 'newLyrics') {
-      lyrics = [...lyrics, data]
+      content.lyrics = [...content.lyrics, data]
       FileToPatch = {
-        lyrics: lyrics
+        lyrics: content.lyrics
       }
     } else if (type === 'newTab') {
-      tabs = [...tabs, data]
+      content.tabs = [...content.tabs, data]
       FileToPatch = {
-        tabs: tabs
+        tabs: content.tabs
       }
     } else if (type === 'newSound') {
-      sounds = [...sounds, data]
+      content.sounds = [...content.sounds, data]
       FileToPatch = {
-        sounds: sounds
+        sounds: content.sounds
       }
     }
 

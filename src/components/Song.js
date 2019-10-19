@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
+import DeleteSong from './DeleteSong'
 import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
 import { Edit } from 'styled-icons/fa-regular/Edit'
@@ -70,11 +71,16 @@ export default function Song({ id, content, updateSongs }) {
               updateSongs={updateSongs}
             ></SongContent>
           ))}
-          <AddFile
-            id={id}
-            content={content}
-            updateSongs={updateSongs}
-          ></AddFile>
+          {isEditButtonActive && (
+            <React.Fragment>
+              <AddFile
+                id={id}
+                content={content}
+                updateSongs={updateSongs}
+              ></AddFile>
+              <DeleteSong id={id} updateSongs={updateSongs}></DeleteSong>
+            </React.Fragment>
+          )}
         </section>
       )}
     </SongStyled>

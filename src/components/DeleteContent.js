@@ -54,19 +54,35 @@ export default function DeleteContent({
     <DeleteButtonStyled onClick={toggleDeletion}></DeleteButtonStyled>
   ) : (
     <ConfirmationWindowStyled>
-      <h3>Do you really want to delete this file?</h3>
-      <button onClick={deleteFile}>Yes</button>
+      <p>Do you really want to delete this file?</p>
       <button onClick={toggleDeletion}>No</button>
+      <button onClick={deleteFile}>Yes</button>
     </ConfirmationWindowStyled>
   )
 }
 
 const DeleteButtonStyled = styled(DeleteForever)`
-  height: 50px;
-  width: 50px;
-  color: green;
+  height: 40px;
+  color: var(--orange);
+  cursor: pointer;
 `
+
 const ConfirmationWindowStyled = styled.div`
   margin: 0;
-  background-color: yellow;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 10px;
+  background-color: var(--orange);
+  p {
+    text-align: center;
+    font-size: 1em;
+    margin: 10px;
+    grid-column: 1/3;
+  }
+  button {
+    color: var(--darkblue);
+    font-size: 1em;
+    margin: 10px;
+    height: 40px;
+  }
 `

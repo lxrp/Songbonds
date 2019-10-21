@@ -2,8 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { patchSong } from '../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
+import styled from 'styled-components/macro'
 
-export default function AddFile({ id, content, updateSongs }) {
+export default function AddFile({
+  id,
+  content,
+  updateSongs,
+  setChosenEditForm,
+  chosenEditForm
+}) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
   const [fileType, setFileType] = useState()
   const [isFormActive, setIsFormActive] = useState(false)
@@ -76,56 +83,121 @@ export default function AddFile({ id, content, updateSongs }) {
   }
 
   return (
-    <React.Fragment>
-      <ChooseFileTypeForm
-        setFileType={setFileType}
-        setIsFormActive={setIsFormActive}
-        setIsAddFileVisible={setIsAddFileVisible}
-        isAddFileVisible={isAddFileVisible}
-      ></ChooseFileTypeForm>
-      {isFormActive && (
-        <React.Fragment>
-          <h3>
-            New
-            {' ' + fileType.slice(3)}
-          </h3>
-          {fileType !== 'newSound' && !isUploadFormActive && (
-            <form type={fileType} onSubmit={handleSubmit}>
-              <label>
+    chosenEditForm !== 2 && (
+      <AddFileStyled>
+        <ChooseFileTypeForm
+          setFileType={setFileType}
+          setIsFormActive={setIsFormActive}
+          setIsAddFileVisible={setIsAddFileVisible}
+          isAddFileVisible={isAddFileVisible}
+          setChosenEditForm={setChosenEditForm}
+          chosenEditForm={chosenEditForm}
+        ></ChooseFileTypeForm>
+        {isFormActive && (
+          <FormStyled>
+            <h3>
+              New
+              {' ' + fileType.slice(3)}
+            </h3>
+            {fileType !== 'newSound' && !isUploadFormActive && (
+              <form type={fileType} onSubmit={handleSubmit}>
+                <label>
+                  {' '}
+                  Name your new {' ' + fileType.slice(3)}-file:
+                  <input
+                    autoFocus
+                    name="subtitle"
+                    type="text"
+                    placeholder="subtitle"
+                  ></input>
+                </label>
+
+                <label>
+                  Place your {fileType.slice(3)} here:
+                  <textarea
+                    name="content"
+                    rows="10"
+                    placeholder="Start to type!"
+                  ></textarea>
+                </label>
+
+                <label>
+                  No text to type? Upload an Image instead:
+                  <button onClick={toggleFileUpload}>Upload</button>
+                </label>
+
+                <button>Submit {fileType.slice(3)} </button>
+              </form>
+            )}
+
+            {(fileType === 'newSound' || isUploadFormActive) && (
+              <UploadFile
+                setFileUrl={setFileUrl}
+                setSubtitle={setSubtitle}
+                onUpload={toggleForm}
+              >
                 {' '}
-                Name your new {' ' + fileType.slice(3)}-File:
-                <input
-                  autoFocus
-                  name="subtitle"
-                  type="text"
-                  placeholder="subtitle"
-                ></input>
-              </label>
-              <label>
-                <textarea
-                  name="content"
-                  rows="10"
-                  placeholder="Place your text here!"
-                ></textarea>
-              </label>
-              <button>Add File</button>
-              <button onClick={toggleFileUpload}>upload Image</button>
-            </form>
-          )}
+              </UploadFile>
+            )}
 
-          {(fileType === 'newSound' || isUploadFormActive) && (
-            <UploadFile
-              setFileUrl={setFileUrl}
-              setSubtitle={setSubtitle}
-              onUpload={toggleForm}
-            >
-              {' '}
-            </UploadFile>
-          )}
-
-          <button onClick={cancel}>Cancel</button>
-        </React.Fragment>
-      )}
-    </React.Fragment>
+            <button onClick={cancel}>Cancel</button>
+          </FormStyled>
+        )}
+      </AddFileStyled>
+    )
   )
 }
+
+const AddFileStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+const FormStyled = styled.section`
+  display: grid;
+
+  grid-template-rows: 50px 50px 1fr 40px 40px;
+  grid-template-columns: 75% 25%;
+  grid-template-areas:
+    'headline headline'
+    'subtitle subtitle'
+    'textarea upload'
+    'submitButton .'
+    'cancelButton .';
+  grid-gap: 10px;
+  h3 {
+    grid-area: headline;
+  }
+
+  label:nth-child(1) {
+    grid-area: subtitle;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    input {
+      float: left;
+      width: 100%;
+    }
+  }
+  label:nth-child(2) {
+    grid-area: textarea;
+    display: flex;
+    align-items: center;
+    input {
+      float: left;
+      width: 100%;
+    }
+    cursor: pointer;
+    button {
+      grid-area: submitButton;
+    }
+  }
+  label:nth-child(3) {
+    grid-area: upload;
+    background-color: black;
+    cursor: pointer;
+  }
+  button {
+    grid-area: cancelButton;
+  }
+`

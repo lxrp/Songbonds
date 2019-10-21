@@ -3,10 +3,10 @@ import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
 import { postSong } from '../services'
 
-export default function CreateSong({ onCreate }) {
+export default function CreateSong({ updateSongs }) {
   const [isSongFormActive, setIsSongFormActive] = useState(false)
 
-  function openSongForm() {
+  function toggleSongForm() {
     setIsSongFormActive(!isSongFormActive)
   }
 
@@ -15,19 +15,24 @@ export default function CreateSong({ onCreate }) {
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
     createSong(data)
-    openSongForm()
+    toggleSongForm()
   }
 
   function createSong({ title }) {
-    postSong({ title: title }).then(onCreate)
+    postSong({ title: title }).then(updateSongs)
   }
 
   return (
-    <section>
-      <h3>add Song</h3>
-      <CreateSongStyled onClick={openSongForm}></CreateSongStyled>
+    <CreateSongStyled active={isSongFormActive}>
+      <h3>Add new Song:</h3>
+      <CreateSongButtonStyled
+        active={isSongFormActive}
+        onClick={toggleSongForm}
+      >
+        {' '}
+      </CreateSongButtonStyled>
       {isSongFormActive && (
-        <form onSubmit={handleSubmit}>
+        <FormStyled onSubmit={handleSubmit}>
           <input
             autoFocus
             name="title"
@@ -35,15 +40,41 @@ export default function CreateSong({ onCreate }) {
             placeholder="Songtitle"
           ></input>
 
-          <button>Create Song</button>
-        </form>
+          <ButtonStyled>Create Song</ButtonStyled>
+          <ButtonStyled onClick={toggleSongForm}>Cancel</ButtonStyled>
+        </FormStyled>
       )}
-    </section>
+    </CreateSongStyled>
   )
 }
 
-const CreateSongStyled = styled(PlusCircle)`
-  height: 50px;
-  width: 50px;
-  color: green;
+const CreateSongButtonStyled = styled(PlusCircle)`
+  display: ${item => (item.active ? 'none' : 'block')};
+  width: 40px;
+  color: var(--greywhite);
+  cursor: pointer;
+`
+const CreateSongStyled = styled.section`
+  width: ${item => (item.active ? '80vw' : '40vw')};
+  padding: 0 10px 0 10px;
+  display: flex;
+  flex-direction: ${item => (item.active ? 'column' : 'row')};
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 10px;
+  color: var(--greywhite);
+  background-color: var(--darkblue);
+`
+const FormStyled = styled.form`
+  background-color: var(--darkblue);
+  display: grid;
+  grid-gap: 10px;
+  margin: 10px;
+`
+const ButtonStyled = styled.button`
+  height: 40px;
+  border-radius: 10px;
+  color: var(--darkblue);
+  background-color: var(--greywhite);
 `

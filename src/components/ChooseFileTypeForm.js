@@ -9,13 +9,16 @@ export default function ChooseFileTypeForm({
   setFileType,
   setIsFormActive,
   setIsAddFileVisible,
-  isAddFileVisible
+  isAddFileVisible,
+  setChosenEditForm,
+  chosenEditForm
 }) {
   const [isAddFileFormActive, setIsAddFileFormActive] = useState(false)
 
   function openFileForm() {
     setIsAddFileVisible(!isAddFileVisible)
     setIsAddFileFormActive(!isAddFileFormActive)
+    setChosenEditForm(chosenEditForm === 0 ? (chosenEditForm = 1) : 0)
   }
 
   function submitFile(event) {
@@ -26,46 +29,73 @@ export default function ChooseFileTypeForm({
   }
 
   return (
-    <section>
+    <AddFileStyled>
       {isAddFileVisible && (
         <div>
           <h3>add File</h3>
-          <AddFileStyled onClick={openFileForm}></AddFileStyled>
+          <AddButtonStyled onClick={openFileForm}></AddButtonStyled>
         </div>
       )}
       {isAddFileFormActive && (
-        <div>
-          <h2>Choose Filetype:</h2>
-          <AddLyricStyled
-            name="newLyrics"
-            onClick={submitFile}
-          ></AddLyricStyled>
-          <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
-          <AddSoundStyled name="newSound" onClick={submitFile}></AddSoundStyled>
+        <React.Fragment>
+          <StyledH3>Choose Filetype:</StyledH3>
+          <ChooseFilesStyled>
+            <AddLyricStyled
+              name="newLyrics"
+              onClick={submitFile}
+            ></AddLyricStyled>
+            <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
+            <AddSoundStyled
+              name="newSound"
+              onClick={submitFile}
+            ></AddSoundStyled>
+          </ChooseFilesStyled>
           <button onClick={openFileForm}>Cancel</button>
-        </div>
+        </React.Fragment>
       )}
-    </section>
+    </AddFileStyled>
   )
 }
 
-const AddFileStyled = styled(FilePlus)`
-  height: 50px;
-  width: 50px;
-  color: green;
+const StyledH3 = styled.h3`
+  color: var(--orange);
+`
+const ChooseFilesStyled = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
+const AddFileStyled = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+  button {
+    margin-top: 20px;
+    height: 30px;
+    color: var(--darkblue);
+    background-color: var(--greywhite);
+    cursor: pointer;
+  }
+`
+
+const AddButtonStyled = styled(FilePlus)`
+  height: 40px;
+  color: var(--greywhite);
+  cursor: pointer;
 `
 const AddLyricStyled = styled(FileText)`
   height: 50px;
-  width: 50px;
-  color: green;
+  color: var(--greywhite);
+  cursor: pointer;
 `
 const AddTabStyled = styled(Guitar)`
   height: 50px;
-  width: 50px;
-  color: green;
+  color: var(--greywhite);
+  cursor: pointer;
 `
 const AddSoundStyled = styled(FileAudio)`
   height: 50px;
-  width: 50px;
-  color: green;
+  color: var(--greywhite);
+  cursor: pointer;
 `

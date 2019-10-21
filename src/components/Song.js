@@ -1,17 +1,24 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import DeleteSong from './DeleteSong'
-import { UpArrow } from 'styled-icons/boxicons-regular/UpArrow'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
+import { UpArrow } from 'styled-icons/boxicons-solid/UpArrow'
 import { Edit } from 'styled-icons/fa-regular/Edit'
-
 import AddFile from './AddFile'
+import DeleteSong from './DeleteSong'
 import SongContent from './SongContent'
 
 export default function Song({ id, content, updateSongs }) {
-  const [isSongContentVisible, setIsSongContentVisible] = useState(false)
-  const [isButtonActive, setIsButtonActive] = useState(false)
-  const [isEditButtonActive, setIsEditButtonActive] = useState(false)
+  const hasSongContent =
+    content.lyrics.length === 0 &&
+    content.tabs.length === 0 &&
+    content.sounds.length === 0
+
+  const [isSongContentVisible, setIsSongContentVisible] = useState(
+    hasSongContent
+  )
+  const [isButtonActive, setIsButtonActive] = useState(hasSongContent)
+  const [isEditButtonActive, setIsEditButtonActive] = useState(hasSongContent)
+  const [chosenEditForm, setChosenEditForm] = useState(0)
 
   function onClickToggleButton() {
     setIsButtonActive(!isButtonActive)
@@ -20,12 +27,16 @@ export default function Song({ id, content, updateSongs }) {
 
   function onClickEditButton() {
     setIsEditButtonActive(!isEditButtonActive)
+    !isButtonActive && onClickToggleButton()
   }
 
   return (
     <SongStyled>
       <h2>{content.title}</h2>
-      <EditButtonStyled onClick={onClickEditButton}></EditButtonStyled>
+      <EditButtonStyled
+        onClick={onClickEditButton}
+        active={isEditButtonActive}
+      ></EditButtonStyled>
       <ToggleButtonStyled onClick={onClickToggleButton} active={isButtonActive}>
         {isButtonActive ? (
           <UpArrowStyled></UpArrowStyled>
@@ -33,10 +44,27 @@ export default function Song({ id, content, updateSongs }) {
           <DownArrowStyled></DownArrowStyled>
         )}
       </ToggleButtonStyled>
+      {isEditButtonActive && (
+        <EditBarStyled active={chosenEditForm === 1}>
+          <AddFile
+            id={id}
+            content={content}
+            updateSongs={updateSongs}
+            setChosenEditForm={setChosenEditForm}
+            chosenEditForm={chosenEditForm}
+          ></AddFile>
+          <DeleteSong
+            id={id}
+            updateSongs={updateSongs}
+            setChosenEditForm={setChosenEditForm}
+            chosenEditForm={chosenEditForm}
+          ></DeleteSong>
+        </EditBarStyled>
+      )}
 
       {isSongContentVisible && (
         <section>
-          {content.lyrics.map((lyrics, index) => (
+          {content.lyrics.reverse().map((lyrics, index) => (
             <SongContent
               id={id}
               type="lyrics"
@@ -49,7 +77,7 @@ export default function Song({ id, content, updateSongs }) {
               {' '}
             </SongContent>
           ))}
-          {content.tabs.map((tab, index) => (
+          {content.tabs.reverse().map((tab, index) => (
             <SongContent
               id={id}
               type="tab"
@@ -60,7 +88,7 @@ export default function Song({ id, content, updateSongs }) {
               updateSongs={updateSongs}
             ></SongContent>
           ))}
-          {content.sounds.map((sounds, index) => (
+          {content.sounds.reverse().map((sounds, index) => (
             <SongContent
               id={id}
               type="sound"
@@ -71,16 +99,6 @@ export default function Song({ id, content, updateSongs }) {
               updateSongs={updateSongs}
             ></SongContent>
           ))}
-          {isEditButtonActive && (
-            <React.Fragment>
-              <AddFile
-                id={id}
-                content={content}
-                updateSongs={updateSongs}
-              ></AddFile>
-              <DeleteSong id={id} updateSongs={updateSongs}></DeleteSong>
-            </React.Fragment>
-          )}
         </section>
       )}
     </SongStyled>
@@ -88,34 +106,55 @@ export default function Song({ id, content, updateSongs }) {
 }
 
 const SongStyled = styled.article`
-  border: 2px solid;
-  background-color: darkgray;
+  border: 1px var(--darkblue) solid;
+  box-shadow: 3px 3px 3px var(--darkblue);
+  border-radius: 10px;
+  background-color: var(--greywhite);
   margin: 10px;
-  padding: 10px;
+  padding: 0px 10px 10px 10px;
   list-style: none;
   position: relative;
+  text-align: left;
+  color: var(--darkblue);
 `
 
 const ToggleButtonStyled = styled.div`
-  border: 2px solid black;
+  position: absolute;
   right: 10px;
   top: 5px;
-  position: absolute;
-  background-color: ${item => (item.active ? 'darkgray' : 'lightgray')};
+  cursor: pointer;
 `
 
 const DownArrowStyled = styled(DownArrow)`
   height: 50px;
   width: 50px;
-  color: green;
+  color: var(--darkblue);
+  cursor: pointer;
 `
 const UpArrowStyled = styled(UpArrow)`
   height: 50px;
   width: 50px;
-  color: green;
+  color: var(--orange);
+  cursor: pointer;
 `
 const EditButtonStyled = styled(Edit)`
-  height: 50px;
-  width: 50px;
-  color: green;
+  height: 40px;
+  width: 40px;
+  color: ${item => (item.active ? 'var(--orange)' : 'var(--darkblue)')};
+  position: absolute;
+  top: 10px;
+  right: 70px;
+  cursor: pointer;
+`
+
+const EditBarStyled = styled.div`
+  border: 2px solid var(--orange);
+  display: flex;
+
+  justify-content: ${item => (item.active ? 'center' : 'space-between')};
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--greywhite);
+  background-color: var(--darkblue);
 `

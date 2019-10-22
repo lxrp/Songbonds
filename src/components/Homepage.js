@@ -1,8 +1,14 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/macro'
 import SB_Name from '../images/SB_Name.png'
-import Song from './Song'
 import CreateSong from './CreateSong'
+import Song from './Song'
+
+HomePage.propTypes = {
+  songs: PropTypes.array,
+  updateSongs: PropTypes.func
+}
 
 export default function HomePage({ songs, updateSongs }) {
   return (
@@ -41,4 +47,5 @@ const ImageStyled = styled.img`
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  max-width: 300px;
 `

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { DownArrow } from 'styled-icons/boxicons-solid/DownArrow'
@@ -6,6 +7,12 @@ import { Edit } from 'styled-icons/fa-regular/Edit'
 import AddFile from './AddFile'
 import DeleteSong from './DeleteSong'
 import SongContent from './SongContent'
+
+Song.propTypes = {
+  id: PropTypes.number,
+  content: PropTypes.array,
+  updateSongs: PropTypes.func
+}
 
 export default function Song({ id, content, updateSongs }) {
   const hasSongContent =
@@ -150,9 +157,8 @@ const EditButtonStyled = styled(Edit)`
 const EditBarStyled = styled.div`
   border: 2px solid var(--orange);
   display: flex;
-
-  justify-content: ${item => (item.active ? 'center' : 'space-between')};
-  align-items: center;
+  justify-content: ${item => (item.active ? 'center' : 'space-around')};
+  align-items: top;
   padding: 10px;
   border-radius: 10px;
   color: var(--greywhite);

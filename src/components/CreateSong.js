@@ -1,7 +1,12 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
 import { postSong } from '../services'
+
+CreateSong.propTypes = {
+  updateSongs: PropTypes.func
+}
 
 export default function CreateSong({ updateSongs }) {
   const [isSongFormActive, setIsSongFormActive] = useState(false)
@@ -40,7 +45,7 @@ export default function CreateSong({ updateSongs }) {
             placeholder="Songtitle"
           ></input>
 
-          <ButtonStyled>Create Song</ButtonStyled>
+          <ButtonStyled>create Song</ButtonStyled>
           <ButtonStyled onClick={toggleSongForm}>Cancel</ButtonStyled>
         </FormStyled>
       )}

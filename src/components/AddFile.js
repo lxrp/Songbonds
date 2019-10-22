@@ -6,8 +6,8 @@ import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
 
 AddFile.propTypes = {
-  id: PropTypes.number,
-  content: PropTypes.string,
+  id: PropTypes.string,
+  content: PropTypes.object,
   updateSongs: PropTypes.func,
   setChosenEditForm: PropTypes.func,
   chosenEditForm: PropTypes.number
@@ -50,6 +50,7 @@ export default function AddFile({
     const data = {
       subtitle: subtitle,
       content: fileUrl,
+      timestamp: Date.now(),
       isUploadedFile: isUploadedFile
     }
     patchFile(data, fileType)
@@ -68,6 +69,7 @@ export default function AddFile({
     let data = Object.fromEntries(formData)
     const newData = {
       ...data,
+      timestamp: Date.now(),
       isUploadedFile: isUploadedFile
     }
     toggleForm()

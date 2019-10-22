@@ -5,11 +5,11 @@ import { DeleteForever } from 'styled-icons/material/DeleteForever'
 import { patchSong } from '../services'
 
 DeleteContent.propTypes = {
-  id: PropTypes.number,
-  content: PropTypes.string,
-  lyrics: PropTypes.string,
-  tab: PropTypes.string,
-  sound: PropTypes.string,
+  id: PropTypes.string,
+  content: PropTypes.object,
+  lyrics: PropTypes.object,
+  tab: PropTypes.object,
+  sound: PropTypes.object,
   updateSongs: PropTypes.func
 }
 

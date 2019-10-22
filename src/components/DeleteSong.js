@@ -4,8 +4,8 @@ import styled from 'styled-components/macro'
 import { Cross } from 'styled-icons/icomoon/Cross'
 import { deleteSong } from '../services'
 
-DeleteSong.PropTypes = {
-  id: PropTypes.number,
+DeleteSong.propTypes = {
+  id: PropTypes.string,
   updateSongs: PropTypes.func,
   setChosenEditForm: PropTypes.func,
   chosenEditForm: PropTypes.number

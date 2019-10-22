@@ -6,16 +6,18 @@ import { FileAlt } from 'styled-icons/fa-solid/FileAlt'
 import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import DeleteContent from './DeleteContent'
+import GetTimestamp from './GetTimestamp'
 
 SongContent.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   type: PropTypes.string,
-  content: PropTypes.array,
+  content: PropTypes.object,
   lyrics: PropTypes.object,
   tab: PropTypes.object,
   sound: PropTypes.object,
   isEditButtonActive: PropTypes.bool,
-  updateSongs: PropTypes.func
+  updateSongs: PropTypes.func,
+  timestamp: PropTypes.string
 }
 
 export default function SongContent({
@@ -26,7 +28,8 @@ export default function SongContent({
   tab,
   sound,
   isEditButtonActive,
-  updateSongs
+  updateSongs,
+  timestamp
 }) {
   const [areFilesVisible, setAreFilesVisible] = useState(false)
   const [isActive, setIsActive] = useState(false)
@@ -57,8 +60,11 @@ export default function SongContent({
             onClick={toggleFiles}
           ></LyricsFileStyled>
         </div>
-        <h4>{lyrics.subtitle}</h4>
+        <SubtitleBoxStyled>
+          <h4>{lyrics.subtitle}</h4>
 
+          <GetTimestamp lyrics={lyrics}></GetTimestamp>
+        </SubtitleBoxStyled>
         {areFilesVisible && (
           <article>
             {lyrics.isUploadedFile ? (
@@ -90,8 +96,12 @@ export default function SongContent({
             onClick={toggleFiles}
           ></TabFileStyled>
         </div>
-        <h4>{tab.subtitle}</h4>
-
+        <div>
+          <SubtitleBoxStyled>
+            <h4>{tab.subtitle}</h4>
+            <GetTimestamp tab={tab}></GetTimestamp>{' '}
+          </SubtitleBoxStyled>
+        </div>
         {areFilesVisible && (
           <article>
             {tab.isUploadedFile ? (
@@ -120,8 +130,12 @@ export default function SongContent({
             onClick={toggleFiles}
           ></AudioFileStyled>
         </div>
-        <h4>{sound.subtitle}</h4>
-
+        <div>
+          <SubtitleBoxStyled>
+            <h4>{sound.subtitle}</h4>
+            <GetTimestamp sound={sound}></GetTimestamp>{' '}
+          </SubtitleBoxStyled>
+        </div>
         {areFilesVisible && (
           <article>
             <AudioPlayerStyled src={sound.content} />
@@ -135,10 +149,21 @@ const SongContentStyled = styled.section`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 10px;
   flex-direction: row;
+  padding: 5px;
   article {
     flex-basis: 100%;
+  }
+`
+const SubtitleBoxStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  h4 {
+    margin-bottom: 3px;
+  }
+  p {
+    margin-top: 0;
+    font-size: 0.5em;
   }
 `
 

@@ -9,8 +9,8 @@ import DeleteSong from './DeleteSong'
 import SongContent from './SongContent'
 
 Song.propTypes = {
-  id: PropTypes.number,
-  content: PropTypes.array,
+  id: PropTypes.string,
+  content: PropTypes.object,
   updateSongs: PropTypes.func
 }
 
@@ -39,18 +39,25 @@ export default function Song({ id, content, updateSongs }) {
 
   return (
     <SongStyled>
-      <h2>{content.title}</h2>
-      <EditButtonStyled
-        onClick={onClickEditButton}
-        active={isEditButtonActive}
-      ></EditButtonStyled>
-      <ToggleButtonStyled onClick={onClickToggleButton} active={isButtonActive}>
-        {isButtonActive ? (
-          <UpArrowStyled></UpArrowStyled>
-        ) : (
-          <DownArrowStyled></DownArrowStyled>
-        )}
-      </ToggleButtonStyled>
+      <SongTitleBarStyled>
+        <h2>{content.title}</h2>
+        <ButtonBoxStyled>
+          <EditButtonStyled
+            onClick={onClickEditButton}
+            active={isEditButtonActive}
+          ></EditButtonStyled>
+          <ToggleButtonStyled
+            onClick={onClickToggleButton}
+            active={isButtonActive}
+          >
+            {isButtonActive ? (
+              <UpArrowStyled></UpArrowStyled>
+            ) : (
+              <DownArrowStyled></DownArrowStyled>
+            )}
+          </ToggleButtonStyled>
+        </ButtonBoxStyled>
+      </SongTitleBarStyled>
       {isEditButtonActive && (
         <EditBarStyled active={chosenEditForm === 1}>
           <AddFile
@@ -111,27 +118,43 @@ export default function Song({ id, content, updateSongs }) {
     </SongStyled>
   )
 }
-
 const SongStyled = styled.article`
   border: 1px var(--darkblue) solid;
   box-shadow: 3px 3px 3px var(--darkblue);
   border-radius: 10px;
   background-color: var(--greywhite);
   margin: 10px;
-  padding: 0px 10px 10px 10px;
+  padding: 5px;
   list-style: none;
-  position: relative;
   text-align: left;
   color: var(--darkblue);
 `
 
-const ToggleButtonStyled = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 5px;
-  cursor: pointer;
+const SongTitleBarStyled = styled.section`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
+const ButtonBoxStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`
+
+const EditBarStyled = styled.div`
+  border: 2px solid var(--orange);
+  display: flex;
+  justify-content: ${item => (item.active ? 'center' : 'space-around')};
+  align-items: top;
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--greywhite);
+  background-color: var(--darkblue);
+`
+const ToggleButtonStyled = styled.div`
+  cursor: pointer;
+`
 const DownArrowStyled = styled(DownArrow)`
   height: 50px;
   width: 50px;
@@ -148,19 +171,5 @@ const EditButtonStyled = styled(Edit)`
   height: 40px;
   width: 40px;
   color: ${item => (item.active ? 'var(--orange)' : 'var(--darkblue)')};
-  position: absolute;
-  top: 10px;
-  right: 70px;
   cursor: pointer;
-`
-
-const EditBarStyled = styled.div`
-  border: 2px solid var(--orange);
-  display: flex;
-  justify-content: ${item => (item.active ? 'center' : 'space-around')};
-  align-items: top;
-  padding: 10px;
-  border-radius: 10px;
-  color: var(--greywhite);
-  background-color: var(--darkblue);
 `

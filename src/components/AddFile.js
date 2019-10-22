@@ -1,8 +1,17 @@
+import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components/macro'
 import { patchSong } from '../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
-import styled from 'styled-components/macro'
+
+AddFile.propTypes = {
+  id: PropTypes.number,
+  content: PropTypes.string,
+  updateSongs: PropTypes.func,
+  setChosenEditForm: PropTypes.func,
+  chosenEditForm: PropTypes.number
+}
 
 export default function AddFile({
   id,
@@ -33,6 +42,8 @@ export default function AddFile({
     setIsFormActive(false)
     setIsUploadFormActive(false)
     setIsUploadedFile(false)
+    setChosenEditForm((chosenEditForm = 0))
+    updateSongs()
   }
 
   function setUrl() {
@@ -42,6 +53,7 @@ export default function AddFile({
       isUploadedFile: isUploadedFile
     }
     patchFile(data, fileType)
+    setChosenEditForm((chosenEditForm = 0))
   }
 
   function toggleForm() {
@@ -54,9 +66,13 @@ export default function AddFile({
     const type = event.currentTarget.getAttribute('type')
     const formData = new FormData(event.target)
     let data = Object.fromEntries(formData)
-    const newData = { ...data, isUploadedFile: isUploadedFile }
-    patchFile(newData, type)
+    const newData = {
+      ...data,
+      isUploadedFile: isUploadedFile
+    }
     toggleForm()
+    setChosenEditForm((chosenEditForm = 0))
+    patchFile(newData, type)
   }
 
   function patchFile(data, type) {
@@ -94,13 +110,13 @@ export default function AddFile({
           chosenEditForm={chosenEditForm}
         ></ChooseFileTypeForm>
         {isFormActive && (
-          <FormStyled>
+          <FormBoxStyled>
             <h3>
               New
               {' ' + fileType.slice(3)}
             </h3>
             {fileType !== 'newSound' && !isUploadFormActive && (
-              <form type={fileType} onSubmit={handleSubmit}>
+              <FormStyled type={fileType} onSubmit={handleSubmit}>
                 <label>
                   {' '}
                   Name your new {' ' + fileType.slice(3)}-file:
@@ -122,12 +138,14 @@ export default function AddFile({
                 </label>
 
                 <label>
-                  No text to type? Upload an Image instead:
-                  <button onClick={toggleFileUpload}>Upload</button>
+                  <p>No text to type? Upload an image instead:</p>
+                  <button onClick={toggleFileUpload}>upload</button>
                 </label>
 
-                <button>Submit {fileType.slice(3)} </button>
-              </form>
+                <SubmitButtonStyled>
+                  submit {fileType.slice(3)}{' '}
+                </SubmitButtonStyled>
+              </FormStyled>
             )}
 
             {(fileType === 'newSound' || isUploadFormActive) && (
@@ -140,8 +158,8 @@ export default function AddFile({
               </UploadFile>
             )}
 
-            <button onClick={cancel}>Cancel</button>
-          </FormStyled>
+            <button onClick={cancel}>cancel</button>
+          </FormBoxStyled>
         )}
       </AddFileStyled>
     )
@@ -153,51 +171,67 @@ const AddFileStyled = styled.div`
   flex-direction: column;
   justify-content: center;
 `
-const FormStyled = styled.section`
-  display: grid;
+const SubmitButtonStyled = styled.button`
+  width: 100px;
+  align-content: center;
+`
 
-  grid-template-rows: 50px 50px 1fr 40px 40px;
-  grid-template-columns: 75% 25%;
-  grid-template-areas:
-    'headline headline'
-    'subtitle subtitle'
-    'textarea upload'
-    'submitButton .'
-    'cancelButton .';
-  grid-gap: 10px;
-  h3 {
-    grid-area: headline;
-  }
+const FormStyled = styled.form`
+  display: grid;
+  grid-template-rows: 100px 1fr 100px;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 10px;
 
   label:nth-child(1) {
-    grid-area: subtitle;
+    grid-row: 1/2;
+    grid-column: 1/3;
     display: flex;
-    align-items: center;
-    cursor: pointer;
+    flex-direction: column;
+    align-content: left;
     input {
-      float: left;
       width: 100%;
     }
   }
+
   label:nth-child(2) {
-    grid-area: textarea;
+    grid-row: 2/3;
+    grid-column: 1/2;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-content: left;
+
     input {
-      float: left;
       width: 100%;
     }
-    cursor: pointer;
+  }
+
+  label:nth-child(3) {
+    grid-row: 2/3;
+    grid-column: 2/3;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
     button {
-      grid-area: submitButton;
+      height: 40px;
     }
   }
-  label:nth-child(3) {
-    grid-area: upload;
-    background-color: black;
-    cursor: pointer;
+`
+
+const FormBoxStyled = styled.section`
+  display: grid;
+  grid-template-rows: 50px auto 40px;
+  grid-gap: 10px;
+
+  h3 {
+    grid-row: 1/2;
   }
+
   button {
-    grid-area: cancelButton;
+    grid-row: 3/4;
+    color: var(--darkblue);
+    border-radius: 10px;
+    background-color: var(--greywhite);
+    height: 40px;
   }
 `

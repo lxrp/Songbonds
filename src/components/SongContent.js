@@ -2,14 +2,20 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import styled from 'styled-components/macro'
+import { FileAlt } from 'styled-icons/fa-solid/FileAlt'
 import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
-import { FileAlt } from 'styled-icons/fa-solid/FileAlt'
-
 import DeleteContent from './DeleteContent'
 
 SongContent.propTypes = {
-  lyrics: PropTypes.object
+  id: PropTypes.number,
+  type: PropTypes.string,
+  content: PropTypes.array,
+  lyrics: PropTypes.object,
+  tab: PropTypes.object,
+  sound: PropTypes.object,
+  isEditButtonActive: PropTypes.bool,
+  updateSongs: PropTypes.func
 }
 
 export default function SongContent({
@@ -128,8 +134,8 @@ export default function SongContent({
 const SongContentStyled = styled.section`
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   padding: 10px;
-  gap: 10px;
   flex-direction: row;
   article {
     flex-basis: 100%;
@@ -137,23 +143,27 @@ const SongContentStyled = styled.section`
 `
 
 const LyricsFileStyled = styled(FileAlt)`
-  height: 50px;
+  width: 40px;
+  margin-right: 10px;
   color: ${item => (item.active ? 'var(--orange)' : 'var(--darkblue)')};
   cursor: pointer;
 `
 
 const TabFileStyled = styled(Guitar)`
-  height: 50px;
+  width: 40px;
+  margin-right: 10px;
   color: ${item => (item.active ? 'var(--orange)' : 'var(--darkblue)')};
   cursor: pointer;
 `
 
 const AudioFileStyled = styled(FileAudio)`
-  height: 50px;
+  width: 40px;
+  margin-right: 10px;
   color: ${item => (item.active ? 'var(--orange)' : 'var(--darkblue)')};
   cursor: pointer;
 `
 const AudioPlayerStyled = styled(AudioPlayer)`
+  margin-top: 10px;
   .toggle-play-button {
     background-color: var(--orange) !important;
   }

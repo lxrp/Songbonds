@@ -1,6 +1,14 @@
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
+import styled from 'styled-components/macro'
 import loading from '../images/loading.gif'
+
+UploadFile.propTypes = {
+  setFileUrl: PropTypes.func,
+  setSubtitle: PropTypes.func,
+  onUpload: PropTypes.func
+}
 
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
@@ -42,21 +50,48 @@ export default function UploadFile({ setFileUrl, setSubtitle, onUpload }) {
   }
 
   return isUploadActive ? (
-    <div>
+    <UploadStyled>
       <h3>File upload in progress. Please wait...</h3>{' '}
       <img src={loading} alt="Upload" />
-    </div>
+    </UploadStyled>
   ) : (
-    <form onSubmit={handleSubmit}>
+    <FormStyled onSubmit={handleSubmit}>
       <label>
-        Name your new File:
+        Name your new file:
         <input autoFocus name="subtitle" placeholder="subtitle"></input>
       </label>
       <label>
         File:
         <input type="file" name="file"></input>
       </label>
-      <button>Upload</button>
-    </form>
+      <button>upload</button>
+    </FormStyled>
   )
 }
+
+const UploadStyled = styled.div`
+  text-align: center;
+  align-items: center;
+  img {
+    max-width: 100px;
+  }
+`
+
+const FormStyled = styled.form`
+  display: grid;
+  grid-gap: 10px;
+
+  label:nth-child(1) {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  button {
+    color: var(--darkblue);
+    border-radius: 10px;
+    background-color: var(--greywhite);
+    height: 40px;
+    width: 100%;
+  }
+`

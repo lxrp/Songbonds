@@ -1,12 +1,18 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { Cross } from 'styled-icons/icomoon/Cross'
 import { deleteSong } from '../services'
 
+DeleteSong.PropTypes = {
+  id: PropTypes.number,
+  updateSongs: PropTypes.func,
+  setChosenEditForm: PropTypes.func,
+  chosenEditForm: PropTypes.number
+}
 export default function DeleteSong({
   id,
   updateSongs,
-  chooseEditComponent,
   setChosenEditForm,
   chosenEditForm
 }) {
@@ -52,21 +58,20 @@ const DeleteButtonStyled = styled(Cross)`
 const ConfirmationWindowStyled = styled.div`
   color: var(--darkblue);
   margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: center;
+  align-content: center;
   border-radius: 10px;
   background-color: var(--orange);
   p {
     text-align: center;
     font-size: 1em;
     margin: 10px;
-    grid-column: 1/3;
   }
   button {
     color: var(--darkblue);
     font-size: 1em;
     margin: 10px;
     height: 40px;
-    cursor: pointer;
   }
 `

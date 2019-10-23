@@ -10,9 +10,8 @@ const songSchema = mongoose.Schema(
   { toJSON: { virtuals: true } }
 )
 
-songSchema.virtual('timestamp-song').get(function() {
+songSchema.virtual('timestamp_song').get(function() {
   return this._id.getTimestamp()
 })
-const Song = mongoose.model('Song', songSchema)
 
-module.exports = Song
+module.exports = mongoose.model('Song', songSchema)

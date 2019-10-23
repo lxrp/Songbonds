@@ -1,3 +1,5 @@
+import { setInStorage, getFromStorage } from './Storage'
+
 export function getSongs() {
   return fetchSongs()
 }
@@ -22,4 +24,46 @@ function fetchSongs({ method = 'GET', id = '', data } = {}) {
       'content-type': 'application/json'
     }
   }).then(res => res.json())
+}
+
+export function onSignUp(signUpEmail, signUpPassword) {
+  return fetch('/users/', {
+    method: 'POST',
+    body: JSON.stringify({
+      email: signUpEmail,
+      password: signUpPassword
+    }),
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(res => res.json())
+  // .then(json => {
+  //   if (json.success) {
+  //     console.log('json', json, json.message)
+  //   } else {
+  //     console.log('json', json, json.message)
+  //   }
+  // })
+}
+
+export function onLogin(loginEmail, loginPassword) {
+  return fetch('/users/login', {
+    method: 'POST',
+    body: JSON.stringify({
+      email: loginEmail,
+      password: loginPassword
+    }),
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(json => {
+      console.log('json', json)
+      if (json.success) {
+        setInStorage('user', { token: json.token })
+      } else {
+        console.log('json-Error', json, json.message)
+      }
+    })
 }

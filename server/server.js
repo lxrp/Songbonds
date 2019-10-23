@@ -15,6 +15,7 @@ server.use(cors())
 server.set('json spaces', 2)
 
 server.use('/songs', require('./routes/songs'))
+server.use('/users', require('./routes/users'))
 
 // Bodyparser middleware
 server.use(bodyParser.urlencoded({ extended: false }))

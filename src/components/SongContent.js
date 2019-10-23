@@ -6,7 +6,7 @@ import { FileAlt } from 'styled-icons/fa-solid/FileAlt'
 import { FileAudio } from 'styled-icons/fa-solid/FileAudio'
 import { Guitar } from 'styled-icons/fa-solid/Guitar'
 import DeleteContent from './DeleteContent'
-import GetTimestamp from './GetTimestamp'
+import Timestamp from './Timestamp'
 
 SongContent.propTypes = {
   id: PropTypes.string,
@@ -16,8 +16,7 @@ SongContent.propTypes = {
   tab: PropTypes.object,
   sound: PropTypes.object,
   isEditButtonActive: PropTypes.bool,
-  updateSongs: PropTypes.func,
-  timestamp: PropTypes.string
+  updateSongs: PropTypes.func
 }
 
 export default function SongContent({
@@ -28,8 +27,7 @@ export default function SongContent({
   tab,
   sound,
   isEditButtonActive,
-  updateSongs,
-  timestamp
+  updateSongs
 }) {
   const [areFilesVisible, setAreFilesVisible] = useState(false)
   const [isActive, setIsActive] = useState(false)
@@ -63,7 +61,7 @@ export default function SongContent({
         <SubtitleBoxStyled>
           <h4>{lyrics.subtitle}</h4>
 
-          <GetTimestamp lyrics={lyrics}></GetTimestamp>
+          <Timestamp fileType={lyrics}></Timestamp>
         </SubtitleBoxStyled>
         {areFilesVisible && (
           <article>
@@ -99,7 +97,7 @@ export default function SongContent({
         <div>
           <SubtitleBoxStyled>
             <h4>{tab.subtitle}</h4>
-            <GetTimestamp tab={tab}></GetTimestamp>{' '}
+            <Timestamp fileType={tab}></Timestamp>{' '}
           </SubtitleBoxStyled>
         </div>
         {areFilesVisible && (
@@ -133,7 +131,7 @@ export default function SongContent({
         <div>
           <SubtitleBoxStyled>
             <h4>{sound.subtitle}</h4>
-            <GetTimestamp sound={sound}></GetTimestamp>{' '}
+            <Timestamp fileType={sound}></Timestamp>{' '}
           </SubtitleBoxStyled>
         </div>
         {areFilesVisible && (

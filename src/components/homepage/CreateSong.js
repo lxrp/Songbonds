@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
-import { postSong } from '../services'
+import { postSong } from '../../services'
 
 CreateSong.propTypes = {
   updateSongs: PropTypes.func

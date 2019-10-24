@@ -2,8 +2,11 @@ const router = require('express').Router()
 const User = require('../models/User')
 const UserSession = require('../models/UserSession')
 
-router.post('/', (req, res) => {
+router.post('/signup', (req, res) => {
   const { body } = req
+  const { name } = body
+  const { band } = body
+  const { bandname } = body
   const { password } = body
   let { email } = body
 
@@ -32,7 +35,7 @@ router.post('/', (req, res) => {
       if (err) {
         return res.send({
           success: false,
-          message: 'Error: Server error'
+          message: 'Error: Server error 1'
         })
       } else if (previousUsers.length > 0) {
         return res.send({
@@ -42,25 +45,29 @@ router.post('/', (req, res) => {
       }
       // Save the new user
       const newUser = new User()
+      newUser.name = name
       newUser.email = email
       newUser.password = newUser.generateHash(password)
+      newUser.band = band
+      newUser.bandname = bandname
+
       newUser.save((err, user) => {
         if (err) {
           return res.send({
             success: false,
-            message: 'Error: Server error'
+            message: 'Error: Server error 2'
           })
-        }
-        return res.send({
-          success: true,
-          message: 'Signed up'
-        })
+        } else if (user)
+          return res.send({
+            success: true,
+            message: 'Signed up'
+          })
       })
     }
   )
 })
 
-router.post('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
   const { body } = req
   const { password } = body
   let { email } = body
@@ -125,7 +132,7 @@ router.post('/login', (req, res, next) => {
   )
 })
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
   // Get the token
   const { query } = req
   const { token } = query

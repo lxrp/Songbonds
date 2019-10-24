@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Homepage from './components/Homepage'
+import Homepage from './components/homepage/Homepage'
+import LandingPage from './components/login/LandingPage'
 import { getSongs } from './services'
-import Login from './components/Login'
 import { getFromStorage } from './Storage'
 
 export default function App() {
   const [songs, setSongs] = useState([])
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(null)
 
   useEffect(() => {
-    updateSongs()
+    verifyUser()
   }, [])
 
-  function updateSongs() {
-    getSongs().then(setSongs)
-  }
-
-  useEffect(() => {
-    verify()
-  }, [])
-
-  function verify() {
+  function verifyUser() {
     const obj = getFromStorage('user')
     if (obj && obj.token) {
       const { token } = obj
@@ -34,25 +26,40 @@ export default function App() {
     }
   }
 
+  useEffect(() => {
+    updateSongs()
+  }, [])
+
+  function updateSongs() {
+    getSongs().then(setSongs)
+  }
+
   return (
     <Router>
-      {isLoggedIn && (
-        <Route
-          exact
-          path="/"
-          render={() => (
-            <React.Fragment>
-              <Homepage updateSongs={updateSongs} songs={songs}></Homepage>
-            </React.Fragment>
-          )}
-        />
-      )}
       <Route
         exact
-        path="/login"
+        path="/home"
         render={() => (
           <React.Fragment>
-            <Login></Login>
+            <Homepage
+              isLoggedIn={isLoggedIn}
+              updateSongs={updateSongs}
+              songs={songs}
+              onLogout={verifyUser}
+            ></Homepage>
+          </React.Fragment>
+        )}
+      />
+
+      <Route
+        exact
+        path="/"
+        render={() => (
+          <React.Fragment>
+            <LandingPage
+              isLoggedIn={isLoggedIn}
+              onLogin={verifyUser}
+            ></LandingPage>
           </React.Fragment>
         )}
       />

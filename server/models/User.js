@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    default: ''
+  },
   email: {
     type: String,
     default: ''
@@ -10,9 +14,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  isDeleted: {
+  band: {
     type: Boolean,
     default: false
+  },
+  bandname: {
+    type: String,
+    default: null
   },
   signUpDate: {
     type: Date,

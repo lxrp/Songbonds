@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { Cross } from 'styled-icons/icomoon/Cross'
-import { deleteSong } from '../services'
+import { deleteSong } from '../../services'
 
 DeleteSong.propTypes = {
   id: PropTypes.string,
@@ -69,9 +69,6 @@ const ConfirmationWindowStyled = styled.div`
     margin: 10px;
   }
   button {
-    color: var(--darkblue);
-    font-size: 1em;
     margin: 10px;
-    height: 40px;
   }
 `

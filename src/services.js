@@ -1,4 +1,4 @@
-import { setInStorage, getFromStorage } from './Storage'
+import { setInStorage } from './Storage'
 
 export function getSongs() {
   return fetchSongs()
@@ -26,24 +26,34 @@ function fetchSongs({ method = 'GET', id = '', data } = {}) {
   }).then(res => res.json())
 }
 
-export function onSignUp(signUpEmail, signUpPassword) {
-  return fetch('/users/', {
+export function onSignUp(
+  username,
+  signUpEmail,
+  signUpPassword,
+  isBand,
+  bandname
+) {
+  return fetch('/users/signup', {
     method: 'POST',
     body: JSON.stringify({
+      name: username,
       email: signUpEmail,
-      password: signUpPassword
+      password: signUpPassword,
+      band: isBand,
+      bandname: bandname
     }),
     headers: {
       'content-type': 'application/json'
     }
-  }).then(res => res.json())
-  // .then(json => {
-  //   if (json.success) {
-  //     console.log('json', json, json.message)
-  //   } else {
-  //     console.log('json', json, json.message)
-  //   }
-  // })
+  })
+    .then(res => res.json())
+    .then(json => {
+      if (json.success) {
+        console.log('json', json, json.message)
+      } else {
+        console.log('json', json, json.message)
+      }
+    })
 }
 
 export function onLogin(loginEmail, loginPassword) {

@@ -23,4 +23,18 @@ export default createGlobalStyle`
     font-size: 1em;
     cursor: pointer;
   }
+
+input {
+    width: 100%;
+  }
+
+  button {
+    color: var(--darkblue);
+    border-radius: 10px;
+    background-color: var(--greywhite);
+    height: 40px;
+    max-width: 200px;
+  }
+
+
 `

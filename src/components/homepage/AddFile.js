@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { patchSong } from '../services'
+import { patchSong } from '../../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
 
@@ -30,6 +30,7 @@ export default function AddFile({
 
   useEffect(() => {
     setUrl()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileUrl])
 
   function toggleFileUpload() {
@@ -190,9 +191,6 @@ const FormStyled = styled.form`
     display: flex;
     flex-direction: column;
     align-content: left;
-    input {
-      width: 100%;
-    }
   }
 
   label:nth-child(2) {
@@ -201,10 +199,6 @@ const FormStyled = styled.form`
     display: flex;
     flex-direction: column;
     align-content: left;
-
-    input {
-      width: 100%;
-    }
   }
 
   label:nth-child(3) {
@@ -214,9 +208,6 @@ const FormStyled = styled.form`
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    button {
-      height: 40px;
-    }
   }
 `
 
@@ -231,9 +222,5 @@ const FormBoxStyled = styled.section`
 
   button {
     grid-row: 3/4;
-    color: var(--darkblue);
-    border-radius: 10px;
-    background-color: var(--greywhite);
-    height: 40px;
   }
 `

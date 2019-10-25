@@ -111,21 +111,28 @@ router.post('/login', (req, res) => {
           message: 'Error: Invalid'
         })
       }
+
       // Otherwise correct user
       const userSession = new UserSession()
       userSession.userId = user._id
       userSession.save((err, doc) => {
         if (err) {
           console.log(err)
-          return res.send({
+          return res.json({
             success: false,
             message: 'Error: server error'
           })
         }
-        return res.send({
+        return res.json({
           success: true,
           message: 'Valid sign in',
-          token: doc._id
+          token: doc._id,
+          activeUser: {
+            userId: user._id,
+            userName: user.name,
+            userBand: user.band,
+            userBandname: user.bandname
+          }
         })
       })
     }
@@ -165,7 +172,7 @@ router.get('/logout', (req, res) => {
   )
 })
 
-router.get('/verify?token=', (req, res, next) => {
+router.get('/verify?token=', (req, res) => {
   // Get the token
   const { query } = req
   const { token } = query

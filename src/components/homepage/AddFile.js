@@ -29,7 +29,7 @@ export default function AddFile({
   const [isUploadedFile, setIsUploadedFile] = useState(false)
 
   useEffect(() => {
-    setUrl()
+    setFileData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileUrl])
 
@@ -43,11 +43,11 @@ export default function AddFile({
     setIsFormActive(false)
     setIsUploadFormActive(false)
     setIsUploadedFile(false)
-    setChosenEditForm((chosenEditForm = 0))
+    setChosenEditForm(0)
     updateSongs()
   }
 
-  function setUrl() {
+  function setFileData() {
     const data = {
       subtitle: subtitle,
       content: fileUrl,
@@ -55,7 +55,7 @@ export default function AddFile({
       isUploadedFile: isUploadedFile
     }
     patchFile(data, fileType)
-    setChosenEditForm((chosenEditForm = 0))
+    setChosenEditForm(0)
   }
 
   function toggleForm() {
@@ -74,7 +74,7 @@ export default function AddFile({
       isUploadedFile: isUploadedFile
     }
     toggleForm()
-    setChosenEditForm((chosenEditForm = 0))
+    setChosenEditForm(0)
     patchFile(newData, type)
   }
 

@@ -15,16 +15,14 @@ Song.propTypes = {
 }
 
 export default function Song({ id, content, updateSongs }) {
-  const hasSongContent =
+  const isSongEmpty =
     content.lyrics.length === 0 &&
     content.tabs.length === 0 &&
     content.sounds.length === 0
 
-  const [isSongContentVisible, setIsSongContentVisible] = useState(
-    hasSongContent
-  )
-  const [isButtonActive, setIsButtonActive] = useState(hasSongContent)
-  const [isEditButtonActive, setIsEditButtonActive] = useState(hasSongContent)
+  const [isSongContentVisible, setIsSongContentVisible] = useState(isSongEmpty)
+  const [isButtonActive, setIsButtonActive] = useState(isSongEmpty)
+  const [isEditButtonActive, setIsEditButtonActive] = useState(isSongEmpty)
   const [chosenEditForm, setChosenEditForm] = useState(0)
 
   function onClickToggleButton() {

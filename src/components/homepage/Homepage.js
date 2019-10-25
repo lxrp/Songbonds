@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import SB_Name from '../../images/SB_Name.png'
@@ -23,6 +23,9 @@ export default function HomePage({ isLoggedIn, songs, updateSongs, onLogout }) {
     <React.Fragment>
       <NavBarStyled>
         <ImageStyled src={SB_Name} alt="Songbonds" />
+
+        <CreateSong updateSongs={updateSongs} />
+
         <Logout updateSongs={updateSongs} onLogout={onLogout}></Logout>
       </NavBarStyled>
       <HomePageStyled>
@@ -34,9 +37,6 @@ export default function HomePage({ isLoggedIn, songs, updateSongs, onLogout }) {
             updateSongs={updateSongs}
           />
         ))}
-        <NavBarStyled>
-          <CreateSong updateSongs={updateSongs} />
-        </NavBarStyled>
       </HomePageStyled>
     </React.Fragment>
   )

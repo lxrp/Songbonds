@@ -1,10 +1,8 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import 'whatwg-fetch'
-import { onSignUp } from '../../services'
-import PropTypes from 'prop-types'
-import { onLogin } from '../../services'
-import { useHistory } from 'react-router-dom'
+import { onLogin, onSignUp } from '../../services'
 
 SignUp.propTypes = {
   onSignUpClick: PropTypes.func,
@@ -12,23 +10,18 @@ SignUp.propTypes = {
 }
 
 export default function SignUp({ onSignUpClick, toggleSignUp }) {
-  let history = useHistory()
   const [isBand, setIsBand] = useState(false)
 
   function handleSignup(event) {
     event.preventDefault()
     const formData = new FormData(event.target)
-    let data = Object.fromEntries(formData)
+    const data = Object.fromEntries(formData)
 
-    const signUpEmail = data.signUpEmail
-    const signUpPassword = data.signUpPassword
-    const username = data.username
-    const bandname = data.bandname
+    const { signUpEmail, signUpPassword, username, bandname } = data
 
     onSignUp(username, signUpEmail, signUpPassword, isBand, bandname)
       .then(autoLogin)
       .then(onSignUpClick)
-      .then(toggleSignUp)
 
     function autoLogin() {
       onLogin(signUpEmail, signUpPassword)
@@ -40,7 +33,7 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
       <h2>SignUp</h2>
       <FormStyled onSubmit={handleSignup}>
         <label>
-          How do you wanna be called in Songbonds?
+          How do you want to be called in Songbonds?
           <input
             autoFocus
             name="username"
@@ -64,14 +57,10 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
             placeholder="your password"
           ></input>
         </label>
-        <label>
-          Do you have a band and want to share your songs with the members?
-          <input
-            value="I have a band"
-            type="checkbox"
-            onChange={() => setIsBand(!isBand)}
-          ></input>
-        </label>
+        Do you have a band and want to share your songs with the members?
+        <BandToggleButtonStyled onClick={() => setIsBand(!isBand)}>
+          Yes!
+        </BandToggleButtonStyled>
         {isBand && (
           <label>
             What's the name of your band?
@@ -84,6 +73,13 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
     </React.Fragment>
   )
 }
+
+const BandToggleButtonStyled = styled.div`
+  width: 50px;
+  height: 50px;
+  background-color: hotpink;
+  cursor: pointer;
+`
 
 const FormStyled = styled.form`
   display: flex;

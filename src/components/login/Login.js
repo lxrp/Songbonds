@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import 'whatwg-fetch'
 import { onLogin } from '../../services'
@@ -9,6 +9,10 @@ Login.propTypes = {
 }
 
 export default function Login({ onLoginClick }) {
+  const [activeUser, setActiveUser] = useState()
+
+  // console.log('* active User:', activeUser)
+
   function handleLogin(event) {
     event.preventDefault()
     const formData = new FormData(event.target)
@@ -17,7 +21,7 @@ export default function Login({ onLoginClick }) {
     const loginEmail = data.loginEmail
     const loginPassword = data.loginPassword
 
-    onLogin(loginEmail, loginPassword).then(onLoginClick)
+    onLogin(loginEmail, loginPassword, setActiveUser).then(onLoginClick)
   }
 
   return (

@@ -30,7 +30,7 @@ export default function LandingPage({ isLoggedIn, onLogin }) {
           <SignUp toggleSignUp={toggleSignUp} onSignUpClick={onLogin}></SignUp>
         ) : (
           <React.Fragment>
-            <Login isLoggedIn={isLoggedIn} onLoginClick={onLogin}></Login>
+            <Login onLoginClick={onLogin}></Login>
             <p>You don't have an account? Create a new one here:</p>
             <button onClick={toggleSignUp}>Sign Up</button>
           </React.Fragment>

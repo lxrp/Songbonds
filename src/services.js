@@ -1,6 +1,8 @@
-export function getSongs() {
-  return fetchSongs()
-}
+import { setInStorage } from './Storage'
+
+// export function getSongs() {
+//   return fetchSongs()
+// }
 
 export function postSong(data) {
   return fetchSongs({ method: 'POST', data })
@@ -21,5 +23,69 @@ function fetchSongs({ method = 'GET', id = '', data } = {}) {
     headers: {
       'content-type': 'application/json'
     }
+  }).then(res => res.json())
+}
+
+export function onSignUp(
+  username,
+  signUpEmail,
+  signUpPassword,
+  isBand,
+  bandname
+) {
+  return fetch('/users/signup', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: username,
+      email: signUpEmail,
+      password: signUpPassword,
+      band: isBand,
+      bandname: bandname
+    }),
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(json => {
+      if (json.success) {
+        console.log('json', json, json.message)
+      } else {
+        console.log('json', json, json.message)
+      }
+    })
+}
+
+export function onLogin(loginEmail, loginPassword) {
+  return fetch('/users/login', {
+    method: 'POST',
+    body: JSON.stringify({
+      email: loginEmail,
+      password: loginPassword
+    }),
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(json => {
+      console.log('json', json)
+      if (json.success) {
+        setInStorage('user', { token: json.token })
+      } else {
+        console.log('json-Error', json, json.message)
+      }
+    })
+}
+
+export function getActiveUser(token) {
+  return fetch('/getUser?token=' + token, {
+    method: 'GET'
+  }).then(res => res.json())
+}
+
+export function getSongsByAuthor(author) {
+  return fetch('/getSongsByAuthor?author=' + author, {
+    method: 'GET'
   }).then(res => res.json())
 }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import loading from '../images/loading.gif'
+import loading from '../../images/loading.gif'
 
 UploadFile.propTypes = {
   setFileUrl: PropTypes.func,
@@ -88,10 +88,6 @@ const FormStyled = styled.form`
   }
 
   button {
-    color: var(--darkblue);
-    border-radius: 10px;
-    background-color: var(--greywhite);
-    height: 40px;
     width: 100%;
   }
 `

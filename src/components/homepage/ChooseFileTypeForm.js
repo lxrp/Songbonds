@@ -81,10 +81,6 @@ const AddFileStyled = styled.section`
 
   button {
     margin-top: 20px;
-    height: 30px;
-    color: var(--darkblue);
-    background-color: var(--greywhite);
-    border-radius: 10px;
   }
 `
 

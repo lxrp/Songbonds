@@ -2,13 +2,14 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
-import { postSong } from '../services'
+import { postSong } from '../../services'
 
 CreateSong.propTypes = {
-  updateSongs: PropTypes.func
+  updateSongs: PropTypes.func,
+  activeUser: PropTypes.object
 }
 
-export default function CreateSong({ updateSongs }) {
+export default function CreateSong({ updateSongs, activeUser }) {
   const [isSongFormActive, setIsSongFormActive] = useState(false)
 
   function toggleSongForm() {
@@ -24,7 +25,7 @@ export default function CreateSong({ updateSongs }) {
   }
 
   function createSong({ title }) {
-    postSong({ title: title }).then(updateSongs)
+    postSong({ title: title, author: activeUser._id }).then(updateSongs)
   }
 
   return (

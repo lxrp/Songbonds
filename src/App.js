@@ -1,27 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Homepage from './components/Homepage'
-import { getSongs } from './services'
+import Homepage from './components/homepage/Homepage'
+import LandingPage from './components/login/LandingPage'
+import { getActiveUser } from './services'
+import { getFromStorage } from './Storage'
 
 export default function App() {
-  const [songs, setSongs] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(null)
+  const [activeUser, setActiveUser] = useState({})
 
   useEffect(() => {
-    updateSongs()
-  }, [])
+    verifyUser()
+  }, [isLoggedIn])
 
-  function updateSongs() {
-    getSongs().then(setSongs)
+  function verifyUser() {
+    const tokenObject = getFromStorage('user')
+    if (tokenObject && tokenObject.token) {
+      const { token } = tokenObject
+
+      getActiveUser(token).then(user => {
+        setActiveUser(user)
+      })
+
+      return fetch('/verify?token=' + token)
+        .then(res => res.json())
+        .then(setIsLoggedIn(true))
+        .catch(error => console.log(error))
+    } else {
+      setIsLoggedIn(false)
+    }
   }
 
   return (
     <Router>
       <Route
         exact
+        path="/home"
+        render={() => (
+          <React.Fragment>
+            <Homepage
+              activeUser={activeUser}
+              isLoggedIn={isLoggedIn}
+              onLogout={verifyUser}
+            ></Homepage>
+          </React.Fragment>
+        )}
+      />
+
+      <Route
+        exact
         path="/"
         render={() => (
           <React.Fragment>
-            <Homepage updateSongs={updateSongs} songs={songs}></Homepage>
+            <LandingPage
+              onLogin={setIsLoggedIn}
+              isLoggedIn={isLoggedIn}
+            ></LandingPage>
           </React.Fragment>
         )}
       />

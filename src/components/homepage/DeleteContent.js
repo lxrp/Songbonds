@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { DeleteForever } from 'styled-icons/material/DeleteForever'
-import { patchSong } from '../services'
+import { patchSong } from '../../services'
 
 DeleteContent.propTypes = {
   id: PropTypes.string,
@@ -90,9 +90,6 @@ const ConfirmationWindowStyled = styled.div`
     grid-column: 1/3;
   }
   button {
-    color: var(--darkblue);
-    font-size: 1em;
     margin: 10px;
-    height: 40px;
   }
 `

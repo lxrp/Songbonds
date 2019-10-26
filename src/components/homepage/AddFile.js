@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { patchSong } from '../services'
+import { patchSong } from '../../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
 
 AddFile.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
-  updateSongs: PropTypes.func,
   setChosenEditForm: PropTypes.func,
   chosenEditForm: PropTypes.number
 }
@@ -16,7 +15,6 @@ AddFile.propTypes = {
 export default function AddFile({
   id,
   content,
-  updateSongs,
   setChosenEditForm,
   chosenEditForm
 }) {
@@ -29,7 +27,8 @@ export default function AddFile({
   const [isUploadedFile, setIsUploadedFile] = useState(false)
 
   useEffect(() => {
-    setUrl()
+    setFileData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileUrl])
 
   function toggleFileUpload() {
@@ -42,11 +41,10 @@ export default function AddFile({
     setIsFormActive(false)
     setIsUploadFormActive(false)
     setIsUploadedFile(false)
-    setChosenEditForm((chosenEditForm = 0))
-    updateSongs()
+    setChosenEditForm(0)
   }
 
-  function setUrl() {
+  function setFileData() {
     const data = {
       subtitle: subtitle,
       content: fileUrl,
@@ -54,7 +52,7 @@ export default function AddFile({
       isUploadedFile: isUploadedFile
     }
     patchFile(data, fileType)
-    setChosenEditForm((chosenEditForm = 0))
+    setChosenEditForm(0)
   }
 
   function toggleForm() {
@@ -73,7 +71,7 @@ export default function AddFile({
       isUploadedFile: isUploadedFile
     }
     toggleForm()
-    setChosenEditForm((chosenEditForm = 0))
+    setChosenEditForm(0)
     patchFile(newData, type)
   }
 
@@ -97,7 +95,7 @@ export default function AddFile({
       }
     }
 
-    patchSong(id, FileToPatch).then(updateSongs)
+    patchSong(id, FileToPatch)
   }
 
   return (
@@ -190,9 +188,6 @@ const FormStyled = styled.form`
     display: flex;
     flex-direction: column;
     align-content: left;
-    input {
-      width: 100%;
-    }
   }
 
   label:nth-child(2) {
@@ -201,10 +196,6 @@ const FormStyled = styled.form`
     display: flex;
     flex-direction: column;
     align-content: left;
-
-    input {
-      width: 100%;
-    }
   }
 
   label:nth-child(3) {
@@ -214,9 +205,6 @@ const FormStyled = styled.form`
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    button {
-      height: 40px;
-    }
   }
 `
 
@@ -231,9 +219,5 @@ const FormBoxStyled = styled.section`
 
   button {
     grid-row: 3/4;
-    color: var(--darkblue);
-    border-radius: 10px;
-    background-color: var(--greywhite);
-    height: 40px;
   }
 `

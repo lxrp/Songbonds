@@ -16,6 +16,8 @@ server.set('json spaces', 2)
 
 server.use('/songs', require('./routes/songs'))
 server.use('/users', require('./routes/users'))
+server.use('/getUser', require('./routes/getUser'))
+server.use('/getSongsByAuthor', require('./routes/getSongsByAuthor'))
 
 // Bodyparser middleware
 server.use(bodyParser.urlencoded({ extended: false }))

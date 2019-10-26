@@ -118,21 +118,11 @@ router.post('/login', (req, res) => {
       userSession.save((err, doc) => {
         if (err) {
           console.log(err)
-          return res.json({
-            success: false,
-            message: 'Error: server error'
-          })
         }
-        return res.json({
+        return res.send({
           success: true,
-          message: 'Valid sign in',
-          token: doc._id,
-          activeUser: {
-            userId: user._id,
-            userName: user.name,
-            userBand: user.band,
-            userBandname: user.bandname
-          }
+          message: 'Valid login',
+          token: doc._id
         })
       })
     }

@@ -3,30 +3,44 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import SB_Name from '../../images/SB_Name.png'
+import { getSongsByAuthor } from '../../services'
 import Logout from '../login/Logout'
 import CreateSong from './CreateSong'
 import Song from './Song'
 
 HomePage.propTypes = {
-  songs: PropTypes.array,
-  updateSongs: PropTypes.func,
+  activeUser: PropTypes.object,
   isLoggedIn: PropTypes.bool,
   onLogout: PropTypes.func
 }
 
-export default function HomePage({ isLoggedIn, songs, updateSongs, onLogout }) {
+export default function HomePage({ activeUser, isLoggedIn, onLogout }) {
+  const [songs, setSongs] = useState([])
   let history = useHistory()
 
   isLoggedIn !== null && !isLoggedIn && history.push('/')
 
+  useEffect(() => {
+    getSongsByAuthor(activeUser._id).then(res => {
+      setSongs(res)
+    })
+  }, [activeUser])
+
+  function updateSongs() {
+    getSongsByAuthor(activeUser._id).then(res => {
+      setSongs(res)
+    })
+  }
+
   return (
     <React.Fragment>
       <NavBarStyled>
+        <button onClick={updateSongs}>UPDATE!!!</button>
         <ImageStyled src={SB_Name} alt="Songbonds" />
+        <div>Hello {activeUser.name}</div>
 
-        <CreateSong updateSongs={updateSongs} />
-
-        <Logout updateSongs={updateSongs} onLogout={onLogout}></Logout>
+        <CreateSong activeUser={activeUser} updateSongs={updateSongs} />
+        <Logout onLogout={onLogout}></Logout>
       </NavBarStyled>
       <HomePageStyled>
         {songs.map(song => (

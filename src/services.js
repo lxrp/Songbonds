@@ -1,8 +1,8 @@
 import { setInStorage } from './Storage'
 
-export function getSongs() {
-  return fetchSongs()
-}
+// export function getSongs() {
+//   return fetchSongs()
+// }
 
 export function postSong(data) {
   return fetchSongs({ method: 'POST', data })
@@ -76,4 +76,16 @@ export function onLogin(loginEmail, loginPassword) {
         console.log('json-Error', json, json.message)
       }
     })
+}
+
+export function getActiveUser(token) {
+  return fetch('/getUser?token=' + token, {
+    method: 'GET'
+  }).then(res => res.json())
+}
+
+export function getSongsByAuthor(author) {
+  return fetch('/getSongsByAuthor?author=' + author, {
+    method: 'GET'
+  }).then(res => res.json())
 }

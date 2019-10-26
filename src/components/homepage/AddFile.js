@@ -8,7 +8,6 @@ import UploadFile from './UploadFile'
 AddFile.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
-  updateSongs: PropTypes.func,
   setChosenEditForm: PropTypes.func,
   chosenEditForm: PropTypes.number
 }
@@ -16,7 +15,6 @@ AddFile.propTypes = {
 export default function AddFile({
   id,
   content,
-  updateSongs,
   setChosenEditForm,
   chosenEditForm
 }) {
@@ -44,7 +42,6 @@ export default function AddFile({
     setIsUploadFormActive(false)
     setIsUploadedFile(false)
     setChosenEditForm(0)
-    updateSongs()
   }
 
   function setFileData() {
@@ -98,7 +95,7 @@ export default function AddFile({
       }
     }
 
-    patchSong(id, FileToPatch).then(updateSongs)
+    patchSong(id, FileToPatch)
   }
 
   return (

@@ -61,7 +61,6 @@ export default function Song({ id, content, updateSongs }) {
           <AddFile
             id={id}
             content={content}
-            updateSongs={updateSongs}
             setChosenEditForm={setChosenEditForm}
             chosenEditForm={chosenEditForm}
           ></AddFile>

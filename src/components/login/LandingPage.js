@@ -8,10 +8,11 @@ import SignUp from './SignUp'
 
 LandingPage.propTypes = {
   isLoggedIn: PropTypes.bool,
-  onLogin: PropTypes.func
+  onLogin: PropTypes.func,
+  setActiveUser: PropTypes.func
 }
 
-export default function LandingPage({ isLoggedIn, onLogin }) {
+export default function LandingPage({ isLoggedIn, onLogin, setActiveUser }) {
   const [signUpisActive, setSignUpIsActive] = useState(false)
   let history = useHistory()
 
@@ -30,7 +31,7 @@ export default function LandingPage({ isLoggedIn, onLogin }) {
           <SignUp toggleSignUp={toggleSignUp} onSignUpClick={onLogin}></SignUp>
         ) : (
           <React.Fragment>
-            <Login onLoginClick={onLogin}></Login>
+            <Login setActiveUser={setActiveUser} onLoginClick={onLogin}></Login>
             <p>You don't have an account? Create a new one here:</p>
             <button onClick={toggleSignUp}>Sign Up</button>
           </React.Fragment>

@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const songSchema = mongoose.Schema(
   {
+    author: String,
     title: String,
     lyrics: Array,
     tabs: Array,
@@ -9,9 +10,5 @@ const songSchema = mongoose.Schema(
   },
   { toJSON: { virtuals: true } }
 )
-
-songSchema.virtual('timestamp_song').get(function() {
-  return this._id.getTimestamp()
-})
 
 module.exports = mongoose.model('Song', songSchema)

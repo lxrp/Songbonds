@@ -2,37 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Homepage from './components/homepage/Homepage'
 import LandingPage from './components/login/LandingPage'
-import { getSongs } from './services'
+import { getActiveUser } from './services'
 import { getFromStorage } from './Storage'
 
 export default function App() {
-  const [songs, setSongs] = useState([])
-
   const [isLoggedIn, setIsLoggedIn] = useState(null)
+  const [activeUser, setActiveUser] = useState({})
 
   useEffect(() => {
     verifyUser()
-  }, [])
+  }, [isLoggedIn])
 
   function verifyUser() {
-    const obj = getFromStorage('user')
-    if (obj && obj.token) {
-      const { token } = obj
-      // Verify token
+    const tokenObject = getFromStorage('user')
+    if (tokenObject && tokenObject.token) {
+      const { token } = tokenObject
+
+      getActiveUser(token).then(user => {
+        setActiveUser(user)
+      })
+
       return fetch('/verify?token=' + token)
         .then(res => res.json())
         .then(setIsLoggedIn(true))
+        .catch(error => console.log(error))
     } else {
       setIsLoggedIn(false)
     }
-  }
-
-  useEffect(() => {
-    updateSongs()
-  }, [])
-
-  function updateSongs() {
-    getSongs().then(setSongs)
   }
 
   return (
@@ -43,9 +39,8 @@ export default function App() {
         render={() => (
           <React.Fragment>
             <Homepage
+              activeUser={activeUser}
               isLoggedIn={isLoggedIn}
-              updateSongs={updateSongs}
-              songs={songs}
               onLogout={verifyUser}
             ></Homepage>
           </React.Fragment>
@@ -58,8 +53,8 @@ export default function App() {
         render={() => (
           <React.Fragment>
             <LandingPage
+              onLogin={setIsLoggedIn}
               isLoggedIn={isLoggedIn}
-              onLogin={verifyUser}
             ></LandingPage>
           </React.Fragment>
         )}

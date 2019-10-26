@@ -11,10 +11,10 @@ Logout.propTypes = {
 
 export default function Logout({ onLogout }) {
   function logout() {
-    const obj = getFromStorage('user')
+    const tokenObject = getFromStorage('user')
 
-    if (obj && obj.token) {
-      const { token } = obj
+    if (tokenObject && tokenObject.token) {
+      const { token } = tokenObject
       // Verify token
       fetch('users/logout?token=' + token)
         .then(res => res.json())

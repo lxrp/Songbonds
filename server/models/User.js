@@ -14,14 +14,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  band: {
-    type: Boolean,
-    default: false
-  },
-  bandname: {
-    type: String,
-    default: null
-  },
   signUpDate: {
     type: Date,
     default: Date.now()

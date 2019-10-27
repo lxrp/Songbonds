@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { patchSong } from '../../services'
+import { patchSong } from '../services'
 import ChooseFileTypeForm from './ChooseFileTypeForm'
 import UploadFile from './UploadFile'
 
@@ -9,6 +9,7 @@ AddFile.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
   setChosenEditForm: PropTypes.func,
+  resetEditMode: PropTypes.func,
   chosenEditForm: PropTypes.number
 }
 
@@ -16,6 +17,7 @@ export default function AddFile({
   id,
   content,
   setChosenEditForm,
+  resetEditMode,
   chosenEditForm
 }) {
   const [isAddFileVisible, setIsAddFileVisible] = useState(true)
@@ -58,6 +60,7 @@ export default function AddFile({
   function toggleForm() {
     setIsFormActive(!isFormActive)
     setIsAddFileVisible(!isAddFileVisible)
+    resetEditMode()
   }
 
   function handleSubmit(event) {
@@ -110,13 +113,13 @@ export default function AddFile({
           chosenEditForm={chosenEditForm}
         ></ChooseFileTypeForm>
         {isFormActive && (
-          <FormBoxStyled>
+          <React.Fragment>
             <h3>
               New
               {' ' + fileType.slice(3)}
             </h3>
             {fileType !== 'newSound' && !isUploadFormActive && (
-              <FormStyled type={fileType} onSubmit={handleSubmit}>
+              <form type={fileType} onSubmit={handleSubmit}>
                 <label>
                   {' '}
                   Name your new {' ' + fileType.slice(3)}-file:
@@ -137,19 +140,18 @@ export default function AddFile({
                   ></textarea>
                 </label>
 
-                <label>
+                <button>submit {fileType.slice(3)} </button>
+
+                <UploadBoxStyled>
                   <p>No text to type? Upload an image instead:</p>
                   <button onClick={toggleFileUpload}>upload</button>
-                </label>
-
-                <SubmitButtonStyled>
-                  submit {fileType.slice(3)}{' '}
-                </SubmitButtonStyled>
-              </FormStyled>
+                </UploadBoxStyled>
+              </form>
             )}
 
             {(fileType === 'newSound' || isUploadFormActive) && (
               <UploadFile
+                fileType={fileType}
                 setFileUrl={setFileUrl}
                 setSubtitle={setSubtitle}
                 onUpload={toggleForm}
@@ -158,8 +160,8 @@ export default function AddFile({
               </UploadFile>
             )}
 
-            <button onClick={cancel}>cancel</button>
-          </FormBoxStyled>
+            <CancelButtonStyled onClick={cancel}>cancel</CancelButtonStyled>
+          </React.Fragment>
         )}
       </AddFileStyled>
     )
@@ -170,54 +172,24 @@ const AddFileStyled = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-`
-const SubmitButtonStyled = styled.button`
-  width: 100px;
-  align-content: center;
-`
-
-const FormStyled = styled.form`
-  display: grid;
-  grid-template-rows: 100px 1fr 100px;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 10px;
-
-  label:nth-child(1) {
-    grid-row: 1/2;
-    grid-column: 1/3;
-    display: flex;
-    flex-direction: column;
-    align-content: left;
-  }
-
-  label:nth-child(2) {
-    grid-row: 2/3;
-    grid-column: 1/2;
-    display: flex;
-    flex-direction: column;
-    align-content: left;
-  }
-
-  label:nth-child(3) {
-    grid-row: 2/3;
-    grid-column: 2/3;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-  }
-`
-
-const FormBoxStyled = styled.section`
-  display: grid;
-  grid-template-rows: 50px auto 40px;
-  grid-gap: 10px;
-
-  h3 {
-    grid-row: 1/2;
-  }
-
+  margin: 10px;
   button {
-    grid-row: 3/4;
+    align-self: center;
+    width: 100%;
+    max-width: 200px;
   }
+`
+
+const UploadBoxStyled = styled.section`
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  button {
+    margin-top: 0px;
+    align-self: center;
+  }
+`
+const CancelButtonStyled = styled.button`
+  margin-top: 20px;
 `

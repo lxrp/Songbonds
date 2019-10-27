@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/macro'
 import 'whatwg-fetch'
-import { onLogin } from '../../services'
+import { onLogin } from '../services'
 
 Login.propTypes = {
   onLoginClick: PropTypes.func,
@@ -24,7 +24,7 @@ export default function Login({ onLoginClick, setActiveUser }) {
   return (
     <React.Fragment>
       <h2>Login</h2>
-      <FormStyled onSubmit={handleLogin}>
+      <form onSubmit={handleLogin}>
         <label>
           Your email-adress:
           <input name="loginEmail" type="email" placeholder="email"></input>
@@ -38,13 +38,7 @@ export default function Login({ onLoginClick, setActiveUser }) {
           ></input>
         </label>
         <button>log in</button>
-      </FormStyled>
+      </form>
     </React.Fragment>
   )
 }
-
-const FormStyled = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`

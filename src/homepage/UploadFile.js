@@ -2,29 +2,38 @@ import axios from 'axios'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import loading from '../../images/loading.gif'
+import loading from '../images/loading.gif'
 
 UploadFile.propTypes = {
   setFileUrl: PropTypes.func,
   setSubtitle: PropTypes.func,
-  onUpload: PropTypes.func
+  onUpload: PropTypes.func,
+  fileType: PropTypes.string
 }
 
 const CLOUDNAME = process.env.REACT_APP_CLOUDINARY_CLOUDNAME
 const PRESET = process.env.REACT_APP_CLOUDINARY_PRESET
 
-export default function UploadFile({ setFileUrl, setSubtitle, onUpload }) {
-  let [isUploadActive, setIsUploadActive] = useState(false)
+export default function UploadFile({
+  setFileUrl,
+  setSubtitle,
+  onUpload,
+  fileType
+}) {
+  const [isUploadActive, setIsUploadActive] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    setIsUploadActive(!isUploadActive)
     const formData = new FormData(event.target)
     let fileToUpload = formData.get('file')
     const data = Object.fromEntries(formData)
     setSubtitle(data.subtitle)
-    upload(fileToUpload)
-    event.target.reset()
+
+    if (fileToUpload) {
+      setIsUploadActive(!isUploadActive)
+      upload(fileToUpload)
+      event.target.reset()
+    }
   }
 
   function upload(file) {
@@ -60,9 +69,13 @@ export default function UploadFile({ setFileUrl, setSubtitle, onUpload }) {
         Name your new file:
         <input autoFocus name="subtitle" placeholder="subtitle"></input>
       </label>
+      File:
       <label>
-        File:
-        <input type="file" name="file"></input>
+        {fileType === 'newLyrics' || fileType === 'newTab' ? (
+          <input type="file" accept="image/*,.pdf" name="file"></input>
+        ) : (
+          <input type="file" accept="audio/*" name="file"></input>
+        )}
       </label>
       <button>upload</button>
     </FormStyled>

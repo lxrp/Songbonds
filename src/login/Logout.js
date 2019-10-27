@@ -1,6 +1,6 @@
 import React from 'react'
 import 'whatwg-fetch'
-import { deleteFromStorage, getFromStorage } from '../../Storage'
+import { deleteFromStorage, getFromStorage } from '../Storage'
 import styled from 'styled-components/macro'
 import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle'
 import PropTypes from 'prop-types'
@@ -39,8 +39,8 @@ export default function Logout({ onLogout }) {
 }
 
 const LogOutCircleStyled = styled(LogOutCircle)`
-  width: 40px;
-  height: 40px;
+  width: auto;
+  height: 100%;
   color: var(--greywhite);
   border-radius: 10px;
   background-color: var(--darkblue);

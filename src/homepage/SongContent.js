@@ -16,7 +16,8 @@ SongContent.propTypes = {
   tab: PropTypes.object,
   sound: PropTypes.object,
   isEditButtonActive: PropTypes.bool,
-  updateSongs: PropTypes.func
+  updateSongs: PropTypes.func,
+  resetEditMode: PropTypes.func
 }
 
 export default function SongContent({
@@ -27,7 +28,8 @@ export default function SongContent({
   tab,
   sound,
   isEditButtonActive,
-  updateSongs
+  updateSongs,
+  resetEditMode
 }) {
   const [areFilesVisible, setAreFilesVisible] = useState(false)
   const [isActive, setIsActive] = useState(false)
@@ -38,10 +40,6 @@ export default function SongContent({
   }
 
   if (type === 'lyrics') {
-    const lyricsFormated = lyrics.content
-      .split('%')
-      .map((line, index) => <li key={index}>{line}</li>)
-
     return (
       <SongContentStyled active={isEditButtonActive}>
         {isEditButtonActive && (
@@ -50,6 +48,7 @@ export default function SongContent({
             content={content}
             lyrics={lyrics}
             updateSongs={updateSongs}
+            resetEditMode={resetEditMode}
           ></DeleteContent>
         )}
         <div>
@@ -66,18 +65,17 @@ export default function SongContent({
         {areFilesVisible && (
           <article>
             {lyrics.isUploadedFile ? (
-              <img src={lyrics.content} alt="" />
+              <ImageStyled src={lyrics.content} alt="" />
             ) : (
-              <p>{lyricsFormated}</p>
+              <p>
+                <TextStyled> {lyrics.content} </TextStyled>
+              </p>
             )}
           </article>
         )}
       </SongContentStyled>
     )
   } else if (type === 'tab') {
-    const tabFormated = tab.content
-      .split('%')
-      .map((line, index) => <li key={index}>{line}</li>)
     return (
       <SongContentStyled active={isEditButtonActive}>
         {isEditButtonActive && (
@@ -86,6 +84,7 @@ export default function SongContent({
             content={content}
             tab={tab}
             updateSongs={updateSongs}
+            resetEditMode={resetEditMode}
           ></DeleteContent>
         )}
         <div>
@@ -103,9 +102,11 @@ export default function SongContent({
         {areFilesVisible && (
           <article>
             {tab.isUploadedFile ? (
-              <img src={tab.content} alt="" />
+              <ImageStyled src={tab.content} alt="" />
             ) : (
-              <p>{tabFormated}</p>
+              <p>
+                <TextStyled> {tab.content} </TextStyled>
+              </p>
             )}
           </article>
         )}
@@ -120,6 +121,7 @@ export default function SongContent({
             content={content}
             sound={sound}
             updateSongs={updateSongs}
+            resetEditMode={resetEditMode}
           ></DeleteContent>
         )}
         <div>
@@ -143,6 +145,15 @@ export default function SongContent({
     )
   }
 }
+
+const ImageStyled = styled.img`
+  max-width: 100%;
+`
+
+const TextStyled = styled.span`
+  white-space: pre-line;
+`
+
 const SongContentStyled = styled.section`
   display: flex;
   flex-wrap: wrap;

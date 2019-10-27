@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Homepage from './components/homepage/Homepage'
-import LandingPage from './components/login/LandingPage'
+import Homepage from './homepage/Homepage'
+import LandingPage from './login/LandingPage'
 import { getActiveUser } from './services'
 import { getFromStorage } from './Storage'
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import SB_Name from '../../images/SB_Name.png'
+import SB_Name from '../images/SB_Name.png'
 import Login from './Login'
 import SignUp from './SignUp'
 
@@ -22,7 +22,7 @@ export default function LandingPage({ isLoggedIn, onLogin, setActiveUser }) {
     setSignUpIsActive(!signUpisActive)
   }
   return (
-    <React.Fragment>
+    <LandingPageStyled>
       <div>
         <ImageStyled src={SB_Name} alt="Songbonds" />
       </div>
@@ -32,14 +32,23 @@ export default function LandingPage({ isLoggedIn, onLogin, setActiveUser }) {
         ) : (
           <React.Fragment>
             <Login setActiveUser={setActiveUser} onLoginClick={onLogin}></Login>
-            <p>You don't have an account? Create a new one here:</p>
-            <button onClick={toggleSignUp}>Sign Up</button>
+            <SignUpBoxStyled>
+              <p>You don't have an account? Create a new one here:</p>
+              <button onClick={toggleSignUp}>sign up</button>
+            </SignUpBoxStyled>
           </React.Fragment>
         )}
       </FormBoxStyled>
-    </React.Fragment>
+    </LandingPageStyled>
   )
 }
+
+const LandingPageStyled = styled.main`
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const ImageStyled = styled.img`
   display: block;
@@ -48,8 +57,19 @@ const ImageStyled = styled.img`
   width: 80%;
   max-width: 500px;
 `
+const SignUpBoxStyled = styled.section`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  button {
+    align-self: center;
+  }
+`
 
 const FormBoxStyled = styled.section`
+  background: var(--darkblue);
+  border-radius: 10px;
+  color: var(--greywhite);
   display: flex;
   flex-direction: column;
   margin: 10px;

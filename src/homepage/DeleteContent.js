@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { DeleteForever } from 'styled-icons/material/DeleteForever'
-import { patchSong } from '../../services'
+import { patchSong } from '../services'
 
 DeleteContent.propTypes = {
   id: PropTypes.string,
@@ -10,7 +10,8 @@ DeleteContent.propTypes = {
   lyrics: PropTypes.object,
   tab: PropTypes.object,
   sound: PropTypes.object,
-  updateSongs: PropTypes.func
+  updateSongs: PropTypes.func,
+  resetEditMode: PropTypes.func
 }
 
 export default function DeleteContent({
@@ -19,7 +20,8 @@ export default function DeleteContent({
   lyrics,
   tab,
   sound,
-  updateSongs
+  updateSongs,
+  resetEditMode
 }) {
   const [isConfirmationActive, setIsConfirmationActive] = useState(false)
 
@@ -58,6 +60,7 @@ export default function DeleteContent({
     }
     patchSong(id, fileToPatch).then(updateSongs)
     toggleDeletion()
+    resetEditMode()
   }
 
   return !isConfirmationActive ? (
@@ -78,9 +81,11 @@ const DeleteButtonStyled = styled(DeleteForever)`
 `
 
 const ConfirmationWindowStyled = styled.div`
-  margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+
   border-radius: 10px;
   background-color: var(--orange);
   p {

@@ -12,9 +12,7 @@ SongContent.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
   content: PropTypes.object,
-  lyrics: PropTypes.object,
-  tabs: PropTypes.object,
-  sounds: PropTypes.object,
+  object: PropTypes.object,
   isEditButtonActive: PropTypes.bool,
   updateSongs: PropTypes.func,
   resetEditMode: PropTypes.func
@@ -24,9 +22,7 @@ export default function SongContent({
   id,
   type,
   content,
-  lyrics,
-  tabs,
-  sounds,
+  object,
   isEditButtonActive,
   updateSongs,
   resetEditMode
@@ -61,22 +57,12 @@ export default function SongContent({
   const FileIconSound = fileIcons(AudioFileStyled)
 
   function songContent(Component) {
-    let fileObject
-
-    if (type === 'lyrics') {
-      fileObject = lyrics
-    } else if (type === 'tabs') {
-      fileObject = tabs
-    } else if (type === 'sounds') {
-      fileObject = sounds
-    }
-
     return () => (
       <Component active={isEditButtonActive}>
         {isEditButtonActive && (
           <DeleteContentWithType
             type={type}
-            contentToDelete={fileObject}
+            contentToDelete={object}
           ></DeleteContentWithType>
         )}
         <div>
@@ -86,22 +72,22 @@ export default function SongContent({
         </div>
 
         <SubtitleBoxStyled>
-          <h4>{fileObject.subtitle}</h4>
-          <Timestamp fileType={fileObject}></Timestamp>
+          <h4>{object.subtitle}</h4>
+          <Timestamp fileType={object}></Timestamp>
         </SubtitleBoxStyled>
 
         {areFilesVisible &&
           (type === 'sounds' ? (
             <article>
-              <AudioPlayerStyled src={fileObject.content} />
+              <AudioPlayerStyled src={object.content} />
             </article>
           ) : (
             <article>
-              {fileObject.isUploadedFile ? (
-                <ImageStyled src={fileObject.content} alt="" />
+              {object.isUploadedFile ? (
+                <ImageStyled src={object.content} alt="" />
               ) : (
                 <p>
-                  <TextStyled> {fileObject.content} </TextStyled>
+                  <TextStyled> {object.content} </TextStyled>
                 </p>
               )}
             </article>
@@ -110,9 +96,9 @@ export default function SongContent({
     )
   }
 
-  const SongContentByFile = songContent(SongContentStyled)
+  const SongContentByFileType = songContent(SongContentStyled)
 
-  return <SongContentByFile></SongContentByFile>
+  return <SongContentByFileType></SongContentByFileType>
 }
 
 const ImageStyled = styled.img`

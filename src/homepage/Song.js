@@ -38,6 +38,22 @@ export default function Song({ id, content, updateSongs }) {
     !isToggleButtonActive && onClickToggleButton()
   }
 
+  function songContent(Component) {
+    return ({ object, type, index }) => (
+      <Component
+        id={id}
+        type={type}
+        object={object}
+        key={index}
+        content={content}
+        resetEditMode={onClickEditButton}
+        isEditButtonActive={isEditButtonActive}
+        updateSongs={updateSongs}
+      ></Component>
+    )
+  }
+  const SongContentByFileType = songContent(SongContent)
+
   return (
     <SongStyled>
       <SongTitleBarStyled>
@@ -80,42 +96,25 @@ export default function Song({ id, content, updateSongs }) {
       {isSongContentVisible && (
         <section>
           {content.lyrics.reverse().map((lyrics, index) => (
-            <SongContent
-              id={id}
-              type="lyrics"
-              lyrics={lyrics}
-              key={index}
-              content={content}
-              resetEditMode={onClickEditButton}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            >
-              {' '}
-            </SongContent>
+            <SongContentByFileType
+              object={lyrics}
+              type={'lyrics'}
+              index={index}
+            ></SongContentByFileType>
           ))}
           {content.tabs.reverse().map((tabs, index) => (
-            <SongContent
-              id={id}
-              type="tabs"
-              tabs={tabs}
-              key={index}
-              content={content}
-              resetEditMode={onClickEditButton}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            ></SongContent>
+            <SongContentByFileType
+              object={tabs}
+              type={'tabs'}
+              index={index}
+            ></SongContentByFileType>
           ))}
           {content.sounds.reverse().map((sounds, index) => (
-            <SongContent
-              id={id}
-              type="sounds"
-              sounds={sounds}
-              key={index}
-              content={content}
-              resetEditMode={onClickEditButton}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            ></SongContent>
+            <SongContentByFileType
+              object={sounds}
+              type={'sounds'}
+              index={index}
+            ></SongContentByFileType>
           ))}
         </section>
       )}

@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/macro'
-import 'whatwg-fetch'
-import { onLogin, onSignUp } from '../../services'
+import { onLogin, onSignUp } from '../services'
 
 SignUp.propTypes = {
   onSignUpClick: PropTypes.func,
@@ -30,7 +29,7 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
 
   return (
     <React.Fragment>
-      <h2>SignUp</h2>
+      <h2>Signup</h2>
       <FormStyled onSubmit={handleSignup}>
         <label>
           How do you want to be called in Songbonds?
@@ -58,11 +57,15 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
           ></input>
         </label>
         <button>create account</button>
+        <CancelButtonStyled onClick={toggleSignUp}>cancel</CancelButtonStyled>
       </FormStyled>
-      <button onClick={toggleSignUp}>cancel</button>
     </React.Fragment>
   )
 }
+
+const CancelButtonStyled = styled.button`
+  margin-top: 20px;
+`
 
 const FormStyled = styled.form`
   display: flex;

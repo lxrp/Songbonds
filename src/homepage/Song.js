@@ -21,19 +21,38 @@ export default function Song({ id, content, updateSongs }) {
     content.sounds.length === 0
 
   const [isSongContentVisible, setIsSongContentVisible] = useState(isSongEmpty)
-  const [isButtonActive, setIsButtonActive] = useState(isSongEmpty)
+  const [isToggleButtonActive, setIsToggleButtonActive] = useState(isSongEmpty)
   const [isEditButtonActive, setIsEditButtonActive] = useState(isSongEmpty)
   const [chosenEditForm, setChosenEditForm] = useState(0)
 
   function onClickToggleButton() {
-    setIsButtonActive(!isButtonActive)
+    setIsToggleButtonActive(!isToggleButtonActive)
     setIsSongContentVisible(!isSongContentVisible)
+    isToggleButtonActive &&
+      isEditButtonActive &&
+      setIsEditButtonActive(!isEditButtonActive)
   }
 
   function onClickEditButton() {
     setIsEditButtonActive(!isEditButtonActive)
-    !isButtonActive && onClickToggleButton()
+    !isToggleButtonActive && onClickToggleButton()
   }
+
+  function songContent(Component) {
+    return ({ object, type, index }) => (
+      <Component
+        id={id}
+        type={type}
+        object={object}
+        key={index}
+        content={content}
+        resetEditMode={onClickEditButton}
+        isEditButtonActive={isEditButtonActive}
+        updateSongs={updateSongs}
+      ></Component>
+    )
+  }
+  const SongContentByFileType = songContent(SongContent)
 
   return (
     <SongStyled>
@@ -46,9 +65,9 @@ export default function Song({ id, content, updateSongs }) {
           ></EditButtonStyled>
           <ToggleButtonStyled
             onClick={onClickToggleButton}
-            active={isButtonActive}
+            active={isToggleButtonActive}
           >
-            {isButtonActive ? (
+            {isToggleButtonActive ? (
               <UpArrowStyled></UpArrowStyled>
             ) : (
               <DownArrowStyled></DownArrowStyled>
@@ -62,6 +81,7 @@ export default function Song({ id, content, updateSongs }) {
             id={id}
             content={content}
             setChosenEditForm={setChosenEditForm}
+            resetEditMode={onClickEditButton}
             chosenEditForm={chosenEditForm}
           ></AddFile>
           <DeleteSong
@@ -76,39 +96,25 @@ export default function Song({ id, content, updateSongs }) {
       {isSongContentVisible && (
         <section>
           {content.lyrics.reverse().map((lyrics, index) => (
-            <SongContent
-              id={id}
-              type="lyrics"
-              lyrics={lyrics}
+            <SongContentByFileType
+              object={lyrics}
+              type={'lyrics'}
               key={index}
-              content={content}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            >
-              {' '}
-            </SongContent>
+            ></SongContentByFileType>
           ))}
-          {content.tabs.reverse().map((tab, index) => (
-            <SongContent
-              id={id}
-              type="tab"
-              tab={tab}
+          {content.tabs.reverse().map((tabs, index) => (
+            <SongContentByFileType
+              object={tabs}
+              type={'tabs'}
               key={index}
-              content={content}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            ></SongContent>
+            ></SongContentByFileType>
           ))}
           {content.sounds.reverse().map((sounds, index) => (
-            <SongContent
-              id={id}
-              type="sound"
-              sound={sounds}
+            <SongContentByFileType
+              object={sounds}
+              type={'sounds'}
               key={index}
-              content={content}
-              isEditButtonActive={isEditButtonActive}
-              updateSongs={updateSongs}
-            ></SongContent>
+            ></SongContentByFileType>
           ))}
         </section>
       )}
@@ -120,11 +126,10 @@ const SongStyled = styled.article`
   box-shadow: 3px 3px 3px var(--darkblue);
   border-radius: 10px;
   background-color: var(--greywhite);
-  margin: 10px;
-  padding: 5px;
-  list-style: none;
+  margin-top: 10px;
   text-align: left;
   color: var(--darkblue);
+  padding: 10px;
 `
 
 const SongTitleBarStyled = styled.section`
@@ -142,9 +147,8 @@ const ButtonBoxStyled = styled.div`
 const EditBarStyled = styled.div`
   border: 2px solid var(--orange);
   display: flex;
-  justify-content: ${item => (item.active ? 'center' : 'space-around')};
+  justify-content: space-around;
   align-items: top;
-  padding: 10px;
   border-radius: 10px;
   color: var(--greywhite);
   background-color: var(--darkblue);

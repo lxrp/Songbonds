@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { Cross } from 'styled-icons/icomoon/Cross'
-import { deleteSong } from '../../services'
+import { deleteSong } from '../services'
 
 DeleteSong.propTypes = {
   id: PropTypes.string,
@@ -31,12 +31,12 @@ export default function DeleteSong({
     chosenEditForm !== 1 &&
     (!isConfirmationActive ? (
       <DeleteSongStyled>
-        <h3>delete Song</h3>
+        <h3>delete song</h3>
         <DeleteButtonStyled onClick={toggleDeletion}></DeleteButtonStyled>
       </DeleteSongStyled>
     ) : (
       <ConfirmationWindowStyled>
-        <p>Do you really want to delete this complete Song?</p>
+        <p>Do you really want to delete this complete song?</p>
         <button onClick={deleteThisSong}>Yes</button>
         <button onClick={toggleDeletion}>No</button>
       </ConfirmationWindowStyled>
@@ -47,17 +47,19 @@ const DeleteSongStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-content: center;
+  justify-content: center;
 `
 
 const DeleteButtonStyled = styled(Cross)`
-  height: 30px;
+  height: 40px;
   color: var(--greywhite);
   cursor: pointer;
 `
 
 const ConfirmationWindowStyled = styled.div`
+  font-size: 1.5em;
   color: var(--darkblue);
-  margin: 0;
+  margin: 5px;
   display: flex;
   align-items: center;
   align-content: center;

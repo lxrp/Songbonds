@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { PlusCircle } from 'styled-icons/boxicons-regular/PlusCircle'
-import { postSong } from '../../services'
+import { postSong } from '../services'
 
 CreateSong.propTypes = {
   updateSongs: PropTypes.func,
@@ -30,7 +30,7 @@ export default function CreateSong({ updateSongs, activeUser }) {
 
   return (
     <CreateSongStyled active={isSongFormActive}>
-      <h3>Add new Song:</h3>
+      <h3>Add new song </h3>
       <CreateSongButtonStyled
         active={isSongFormActive}
         onClick={toggleSongForm}
@@ -38,7 +38,7 @@ export default function CreateSong({ updateSongs, activeUser }) {
         {' '}
       </CreateSongButtonStyled>
       {isSongFormActive && (
-        <FormStyled onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <input
             autoFocus
             name="title"
@@ -46,9 +46,9 @@ export default function CreateSong({ updateSongs, activeUser }) {
             placeholder="Songtitle"
           ></input>
 
-          <ButtonStyled>create Song</ButtonStyled>
-          <ButtonStyled onClick={toggleSongForm}>Cancel</ButtonStyled>
-        </FormStyled>
+          <ButtonStyled>create song</ButtonStyled>
+          <ButtonStyled onClick={toggleSongForm}>cancel</ButtonStyled>
+        </form>
       )}
     </CreateSongStyled>
   )
@@ -61,26 +61,23 @@ const CreateSongButtonStyled = styled(PlusCircle)`
   cursor: pointer;
 `
 const CreateSongStyled = styled.section`
-  width: ${item => (item.active ? '80vw' : '40vw')};
+  width: 100%;
   padding: 0 10px 0 10px;
   display: flex;
   flex-direction: ${item => (item.active ? 'column' : 'row')};
   justify-content: center;
   align-items: center;
-  font-size: 0.8em;
   border-radius: 10px;
   color: var(--greywhite);
   background-color: var(--darkblue);
+
+  input {
+    font-size: 1.5em;
+    border-radius: 7px;
+    cursor: pointer;
+  }
 `
-const FormStyled = styled.form`
-  background-color: var(--darkblue);
-  display: grid;
-  grid-gap: 10px;
-  margin: 10px;
-`
+
 const ButtonStyled = styled.button`
-  height: 40px;
-  border-radius: 10px;
-  color: var(--darkblue);
-  background-color: var(--greywhite);
+  width: 100%;
 `

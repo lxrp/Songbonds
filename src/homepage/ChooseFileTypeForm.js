@@ -41,25 +41,19 @@ export default function ChooseFileTypeForm({
   return (
     <AddFileStyled>
       {isAddFileVisible && (
-        <div>
-          <h3>add File</h3>
+        <React.Fragment>
+          <h3>add file</h3>
           <AddButtonStyled onClick={openFileForm}></AddButtonStyled>
-        </div>
+        </React.Fragment>
       )}
       {isAddFileFormActive && (
         <React.Fragment>
-          <StyledH3>Choose Filetype:</StyledH3>
-          <ChooseFilesStyled>
-            <AddLyricStyled
-              name="newLyrics"
-              onClick={submitFile}
-            ></AddLyricStyled>
-            <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
-            <AddSoundStyled
-              name="newSound"
-              onClick={submitFile}
-            ></AddSoundStyled>
-          </ChooseFilesStyled>
+          <H3Styled>Choose filetype:</H3Styled>
+          <div>
+            <AddLyricStyled name="lyrics" onClick={submitFile}></AddLyricStyled>
+            <AddTabStyled name="tab" onClick={submitFile}></AddTabStyled>
+            <AddSoundStyled name="sound" onClick={submitFile}></AddSoundStyled>
+          </div>
           <button onClick={openFileForm}>cancel</button>
         </React.Fragment>
       )}
@@ -67,20 +61,19 @@ export default function ChooseFileTypeForm({
   )
 }
 
-const StyledH3 = styled.h3`
+const H3Styled = styled.h3`
   color: var(--orange);
 `
-const ChooseFilesStyled = styled.div`
-  display: flex;
-`
 
-const AddFileStyled = styled.section`
+const AddFileStyled = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-
+  justify-content: center;
   button {
-    margin-top: 20px;
+    margin: 20px 0 10px 0;
+    width: 100%;
+    max-width: 200px;
   }
 `
 

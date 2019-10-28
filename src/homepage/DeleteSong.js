@@ -31,7 +31,7 @@ export default function DeleteSong({
     chosenEditForm !== 1 &&
     (!isConfirmationActive ? (
       <DeleteSongStyled>
-        <h3>delete Song</h3>
+        <h3>delete song</h3>
         <DeleteButtonStyled onClick={toggleDeletion}></DeleteButtonStyled>
       </DeleteSongStyled>
     ) : (
@@ -57,6 +57,7 @@ const DeleteButtonStyled = styled(Cross)`
 `
 
 const ConfirmationWindowStyled = styled.div`
+  font-size: 1.5em;
   color: var(--darkblue);
   margin: 5px;
   display: flex;

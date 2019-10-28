@@ -60,25 +60,25 @@ export default function UploadFile({
 
   return isUploadActive ? (
     <UploadStyled>
-      <h3>File upload in progress. Please wait...</h3>{' '}
+      <h3>File-upload in progress. Please wait...</h3>{' '}
       <img src={loading} alt="Upload" />
     </UploadStyled>
   ) : (
-    <FormStyled onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <label>
         Name your new file:
         <input autoFocus name="subtitle" placeholder="subtitle"></input>
       </label>
       File:
       <label>
-        {fileType === 'newLyrics' || fileType === 'newTab' ? (
+        {fileType === 'lyrics' || fileType === 'tab' ? (
           <input type="file" accept="image/*,.pdf" name="file"></input>
         ) : (
           <input type="file" accept="audio/*" name="file"></input>
         )}
       </label>
       <button>upload</button>
-    </FormStyled>
+    </form>
   )
 }
 
@@ -87,20 +87,5 @@ const UploadStyled = styled.div`
   align-items: center;
   img {
     max-width: 100px;
-  }
-`
-
-const FormStyled = styled.form`
-  display: grid;
-  grid-gap: 10px;
-
-  label:nth-child(1) {
-    margin: 5px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  button {
-    width: 100%;
   }
 `

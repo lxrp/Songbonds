@@ -42,23 +42,17 @@ export default function ChooseFileTypeForm({
     <AddFileStyled>
       {isAddFileVisible && (
         <React.Fragment>
-          <h3>add File</h3>
+          <h3>add file</h3>
           <AddButtonStyled onClick={openFileForm}></AddButtonStyled>
         </React.Fragment>
       )}
       {isAddFileFormActive && (
         <React.Fragment>
-          <H3Styled>Choose Filetype:</H3Styled>
+          <H3Styled>Choose filetype:</H3Styled>
           <div>
-            <AddLyricStyled
-              name="newLyrics"
-              onClick={submitFile}
-            ></AddLyricStyled>
-            <AddTabStyled name="newTab" onClick={submitFile}></AddTabStyled>
-            <AddSoundStyled
-              name="newSound"
-              onClick={submitFile}
-            ></AddSoundStyled>
+            <AddLyricStyled name="lyrics" onClick={submitFile}></AddLyricStyled>
+            <AddTabStyled name="tab" onClick={submitFile}></AddTabStyled>
+            <AddSoundStyled name="sound" onClick={submitFile}></AddSoundStyled>
           </div>
           <button onClick={openFileForm}>cancel</button>
         </React.Fragment>
@@ -76,7 +70,6 @@ const AddFileStyled = styled.div`
   flex-direction: column;
   text-align: center;
   justify-content: center;
-
   button {
     margin: 20px 0 10px 0;
     width: 100%;

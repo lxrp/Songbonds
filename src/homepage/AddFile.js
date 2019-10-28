@@ -81,17 +81,17 @@ export default function AddFile({
   function patchFile(data, type) {
     let FileToPatch
 
-    if (type === 'newLyrics') {
+    if (type === 'lyrics') {
       content.lyrics = [...content.lyrics, data]
       FileToPatch = {
         lyrics: content.lyrics
       }
-    } else if (type === 'newTab') {
+    } else if (type === 'tab') {
       content.tabs = [...content.tabs, data]
       FileToPatch = {
         tabs: content.tabs
       }
-    } else if (type === 'newSound') {
+    } else if (type === 'sound') {
       content.sounds = [...content.sounds, data]
       FileToPatch = {
         sounds: content.sounds
@@ -116,13 +116,13 @@ export default function AddFile({
           <React.Fragment>
             <h3>
               New
-              {' ' + fileType.slice(3)}
+              {' ' + fileType}
             </h3>
-            {fileType !== 'newSound' && !isUploadFormActive && (
+            {fileType !== 'sound' && !isUploadFormActive && (
               <form type={fileType} onSubmit={handleSubmit}>
                 <label>
                   {' '}
-                  Name your new {' ' + fileType.slice(3)}-file:
+                  Name your new {' ' + fileType}-file:
                   <input
                     autoFocus
                     name="subtitle"
@@ -132,7 +132,7 @@ export default function AddFile({
                 </label>
 
                 <label>
-                  Place your {fileType.slice(3)} here:
+                  Place your {fileType} here:
                   <textarea
                     name="content"
                     rows="10"
@@ -140,7 +140,7 @@ export default function AddFile({
                   ></textarea>
                 </label>
 
-                <button>submit {fileType.slice(3)} </button>
+                <button>submit {fileType} </button>
 
                 <UploadBoxStyled>
                   <p>No text to type? Upload an image instead:</p>
@@ -149,7 +149,7 @@ export default function AddFile({
               </form>
             )}
 
-            {(fileType === 'newSound' || isUploadFormActive) && (
+            {(fileType === 'sound' || isUploadFormActive) && (
               <UploadFile
                 fileType={fileType}
                 setFileUrl={setFileUrl}
@@ -175,19 +175,19 @@ const AddFileStyled = styled.div`
   margin: 10px;
   button {
     align-self: center;
-    width: 100%;
     max-width: 200px;
+    width: 100%;
   }
 `
 
 const UploadBoxStyled = styled.section`
-  text-align: center;
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
+  text-align: center;
   button {
-    margin-top: 0px;
     align-self: center;
+    margin-top: 0px;
   }
 `
 const CancelButtonStyled = styled.button`

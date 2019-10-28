@@ -13,8 +13,8 @@ SongContent.propTypes = {
   type: PropTypes.string,
   content: PropTypes.object,
   lyrics: PropTypes.object,
-  tab: PropTypes.object,
-  sound: PropTypes.object,
+  tabs: PropTypes.object,
+  sounds: PropTypes.object,
   isEditButtonActive: PropTypes.bool,
   updateSongs: PropTypes.func,
   resetEditMode: PropTypes.func
@@ -25,8 +25,8 @@ export default function SongContent({
   type,
   content,
   lyrics,
-  tab,
-  sound,
+  tabs,
+  sounds,
   isEditButtonActive,
   updateSongs,
   resetEditMode
@@ -39,111 +39,80 @@ export default function SongContent({
     setIsActive(!isActive)
   }
 
-  if (type === 'lyrics') {
-    return (
-      <SongContentStyled active={isEditButtonActive}>
-        {isEditButtonActive && (
-          <DeleteContent
-            id={id}
-            content={content}
-            lyrics={lyrics}
-            updateSongs={updateSongs}
-            resetEditMode={resetEditMode}
-          ></DeleteContent>
-        )}
-        <div>
-          <LyricsFileStyled
-            active={isActive}
-            onClick={toggleFiles}
-          ></LyricsFileStyled>
-        </div>
-        <SubtitleBoxStyled>
-          <h4>{lyrics.subtitle}</h4>
-
-          <Timestamp fileType={lyrics}></Timestamp>
-        </SubtitleBoxStyled>
-        {areFilesVisible && (
-          <article>
-            {lyrics.isUploadedFile ? (
-              <ImageStyled src={lyrics.content} alt="" />
-            ) : (
-              <p>
-                <TextStyled> {lyrics.content} </TextStyled>
-              </p>
-            )}
-          </article>
-        )}
-      </SongContentStyled>
-    )
-  } else if (type === 'tab') {
-    return (
-      <SongContentStyled active={isEditButtonActive}>
-        {isEditButtonActive && (
-          <DeleteContent
-            id={id}
-            content={content}
-            tab={tab}
-            updateSongs={updateSongs}
-            resetEditMode={resetEditMode}
-          ></DeleteContent>
-        )}
-        <div>
-          <TabFileStyled
-            active={isActive}
-            onClick={toggleFiles}
-          ></TabFileStyled>
-        </div>
-        <div>
-          <SubtitleBoxStyled>
-            <h4>{tab.subtitle}</h4>
-            <Timestamp fileType={tab}></Timestamp>{' '}
-          </SubtitleBoxStyled>
-        </div>
-        {areFilesVisible && (
-          <article>
-            {tab.isUploadedFile ? (
-              <ImageStyled src={tab.content} alt="" />
-            ) : (
-              <p>
-                <TextStyled> {tab.content} </TextStyled>
-              </p>
-            )}
-          </article>
-        )}
-      </SongContentStyled>
-    )
-  } else {
-    return (
-      <SongContentStyled active={isEditButtonActive}>
-        {isEditButtonActive && (
-          <DeleteContent
-            id={id}
-            content={content}
-            sound={sound}
-            updateSongs={updateSongs}
-            resetEditMode={resetEditMode}
-          ></DeleteContent>
-        )}
-        <div>
-          <AudioFileStyled
-            active={isActive}
-            onClick={toggleFiles}
-          ></AudioFileStyled>
-        </div>
-        <div>
-          <SubtitleBoxStyled>
-            <h4>{sound.subtitle}</h4>
-            <Timestamp fileType={sound}></Timestamp>{' '}
-          </SubtitleBoxStyled>
-        </div>
-        {areFilesVisible && (
-          <article>
-            <AudioPlayerStyled src={sound.content} />
-          </article>
-        )}
-      </SongContentStyled>
+  function deleteContent(Component) {
+    return ({ type, contentToDelete }) => (
+      <Component
+        id={id}
+        content={content}
+        type={type}
+        contentToDelete={contentToDelete}
+        updateSongs={updateSongs}
+        resetEditMode={resetEditMode}
+      ></Component>
     )
   }
+  const DeleteContentWithType = deleteContent(DeleteContent)
+
+  function fileIcons(Component) {
+    return () => <Component active={isActive} onClick={toggleFiles}></Component>
+  }
+  const FileIconLyrics = fileIcons(LyricsFileStyled)
+  const FileIconTab = fileIcons(TabFileStyled)
+  const FileIconSound = fileIcons(AudioFileStyled)
+
+  function songContent(Component) {
+    let fileObject
+
+    if (type === 'lyrics') {
+      fileObject = lyrics
+    } else if (type === 'tabs') {
+      fileObject = tabs
+    } else if (type === 'sounds') {
+      fileObject = sounds
+    }
+
+    return () => (
+      <Component active={isEditButtonActive}>
+        {isEditButtonActive && (
+          <DeleteContentWithType
+            type={type}
+            contentToDelete={fileObject}
+          ></DeleteContentWithType>
+        )}
+        <div>
+          {type === 'lyrics' && <FileIconLyrics />}
+          {type === 'tabs' && <FileIconTab />}
+          {type === 'sounds' && <FileIconSound />}
+        </div>
+
+        <SubtitleBoxStyled>
+          <h4>{fileObject.subtitle}</h4>
+          <Timestamp fileType={fileObject}></Timestamp>
+        </SubtitleBoxStyled>
+
+        {areFilesVisible &&
+          (type === 'sounds' ? (
+            <article>
+              <AudioPlayerStyled src={fileObject.content} />
+            </article>
+          ) : (
+            <article>
+              {fileObject.isUploadedFile ? (
+                <ImageStyled src={fileObject.content} alt="" />
+              ) : (
+                <p>
+                  <TextStyled> {fileObject.content} </TextStyled>
+                </p>
+              )}
+            </article>
+          ))}
+      </Component>
+    )
+  }
+
+  const SongContentByFile = songContent(SongContentStyled)
+
+  return <SongContentByFile></SongContentByFile>
 }
 
 const ImageStyled = styled.img`

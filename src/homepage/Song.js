@@ -93,11 +93,11 @@ export default function Song({ id, content, updateSongs }) {
               {' '}
             </SongContent>
           ))}
-          {content.tabs.reverse().map((tab, index) => (
+          {content.tabs.reverse().map((tabs, index) => (
             <SongContent
               id={id}
-              type="tab"
-              tab={tab}
+              type="tabs"
+              tabs={tabs}
               key={index}
               content={content}
               resetEditMode={onClickEditButton}
@@ -108,8 +108,8 @@ export default function Song({ id, content, updateSongs }) {
           {content.sounds.reverse().map((sounds, index) => (
             <SongContent
               id={id}
-              type="sound"
-              sound={sounds}
+              type="sounds"
+              sounds={sounds}
               key={index}
               content={content}
               resetEditMode={onClickEditButton}

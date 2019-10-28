@@ -30,7 +30,7 @@ export default function CreateSong({ updateSongs, activeUser }) {
 
   return (
     <CreateSongStyled active={isSongFormActive}>
-      <h3>Add new Song:</h3>
+      <h3>Add new song </h3>
       <CreateSongButtonStyled
         active={isSongFormActive}
         onClick={toggleSongForm}
@@ -46,7 +46,7 @@ export default function CreateSong({ updateSongs, activeUser }) {
             placeholder="Songtitle"
           ></input>
 
-          <ButtonStyled>create Song</ButtonStyled>
+          <ButtonStyled>create song</ButtonStyled>
           <ButtonStyled onClick={toggleSongForm}>cancel</ButtonStyled>
         </form>
       )}

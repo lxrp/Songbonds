@@ -7,21 +7,19 @@ import { patchSong } from '../services'
 DeleteContent.propTypes = {
   id: PropTypes.string,
   content: PropTypes.object,
-  lyrics: PropTypes.object,
-  tab: PropTypes.object,
-  sound: PropTypes.object,
   updateSongs: PropTypes.func,
-  resetEditMode: PropTypes.func
+  resetEditMode: PropTypes.func,
+  contentToDelete: PropTypes.object,
+  type: PropTypes.string
 }
 
 export default function DeleteContent({
   id,
   content,
-  lyrics,
-  tab,
-  sound,
   updateSongs,
-  resetEditMode
+  resetEditMode,
+  contentToDelete,
+  type
 }) {
   const [isConfirmationActive, setIsConfirmationActive] = useState(false)
 
@@ -31,33 +29,15 @@ export default function DeleteContent({
 
   function deleteFile() {
     let fileToPatch
+    const indexToDelete = content[type].findIndex(
+      element => element === contentToDelete
+    )
+    const newData = [
+      ...content[type].slice(0, indexToDelete),
+      ...content[type].slice(indexToDelete + 1)
+    ]
+    fileToPatch = { [type]: newData }
 
-    if (lyrics != null) {
-      const indexToDelete = content.lyrics.findIndex(
-        element => element === lyrics
-      )
-      const newData = [
-        ...content.lyrics.slice(0, indexToDelete),
-        ...content.lyrics.slice(indexToDelete + 1)
-      ]
-      fileToPatch = { lyrics: newData }
-    } else if (tab != null) {
-      const indexToDelete = content.tabs.findIndex(element => element === tab)
-      const newData = [
-        ...content.tabs.slice(0, indexToDelete),
-        ...content.tabs.slice(indexToDelete + 1)
-      ]
-      fileToPatch = { tabs: newData }
-    } else if (sound != null) {
-      const indexToDelete = content.sounds.findIndex(
-        element => element === sound
-      )
-      const newData = [
-        ...content.sounds.slice(0, indexToDelete),
-        ...content.sounds.slice(indexToDelete + 1)
-      ]
-      fileToPatch = { sounds: newData }
-    }
     patchSong(id, fileToPatch).then(updateSongs)
     toggleDeletion()
     resetEditMode()
@@ -81,6 +61,7 @@ const DeleteButtonStyled = styled(DeleteForever)`
 `
 
 const ConfirmationWindowStyled = styled.div`
+  font-size: 1.5em;
   margin: 5px;
   display: flex;
   align-items: center;

@@ -30,7 +30,7 @@ export default function SignUp({ onSignUpClick, toggleSignUp }) {
 
   return (
     <React.Fragment>
-      <h2>SignUp</h2>
+      <h2>Signup</h2>
       <FormStyled onSubmit={handleSignup}>
         <label>
           How do you want to be called in Songbonds?

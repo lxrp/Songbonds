@@ -5,8 +5,6 @@ const UserSession = require('../models/UserSession')
 router.post('/signup', (req, res) => {
   const { body } = req
   const { name } = body
-  const { band } = body
-  const { bandname } = body
   const { password } = body
   let { email } = body
 
@@ -22,11 +20,10 @@ router.post('/signup', (req, res) => {
       message: 'Error: Password cannot be blank.'
     })
   }
+
   email = email.toLowerCase()
   email = email.trim()
-  // Steps:
-  // 1. Verify email doesn't exist
-  // 2. Save
+
   User.find(
     {
       email: email
@@ -35,7 +32,7 @@ router.post('/signup', (req, res) => {
       if (err) {
         return res.send({
           success: false,
-          message: 'Error: Server error 1'
+          message: 'Error: Server error'
         })
       } else if (previousUsers.length > 0) {
         return res.send({
@@ -43,13 +40,11 @@ router.post('/signup', (req, res) => {
           message: 'Error: Account already exist.'
         })
       }
-      // Save the new user
+
       const newUser = new User()
       newUser.name = name
       newUser.email = email
       newUser.password = newUser.generateHash(password)
-      newUser.band = band
-      newUser.bandname = bandname
 
       newUser.save((err, user) => {
         if (err) {
@@ -112,7 +107,6 @@ router.post('/login', (req, res) => {
         })
       }
 
-      // Otherwise correct user
       const userSession = new UserSession()
       userSession.userId = user._id
       userSession.save((err, doc) => {
@@ -130,11 +124,9 @@ router.post('/login', (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-  // Get the token
   const { query } = req
   const { token } = query
-  // ?token=test
-  // Verify the token is one of a kind and it's not deleted.
+
   UserSession.findOneAndUpdate(
     {
       _id: token,
@@ -146,6 +138,7 @@ router.get('/logout', (req, res) => {
       }
     },
     null,
+
     (err, sessions) => {
       if (err) {
         console.log(err)
@@ -163,11 +156,9 @@ router.get('/logout', (req, res) => {
 })
 
 router.get('/verify?token=', (req, res) => {
-  // Get the token
   const { query } = req
   const { token } = query
-  // ?token=test
-  // Verify the token is one of a kind and it's not deleted.
+
   UserSession.find(
     {
       _id: token,

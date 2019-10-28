@@ -99,21 +99,21 @@ export default function Song({ id, content, updateSongs }) {
             <SongContentByFileType
               object={lyrics}
               type={'lyrics'}
-              index={index}
+              key={index}
             ></SongContentByFileType>
           ))}
           {content.tabs.reverse().map((tabs, index) => (
             <SongContentByFileType
               object={tabs}
               type={'tabs'}
-              index={index}
+              key={index}
             ></SongContentByFileType>
           ))}
           {content.sounds.reverse().map((sounds, index) => (
             <SongContentByFileType
               object={sounds}
               type={'sounds'}
-              index={index}
+              key={index}
             ></SongContentByFileType>
           ))}
         </section>

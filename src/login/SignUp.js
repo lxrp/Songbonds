@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/macro'
-import 'whatwg-fetch'
 import { onLogin, onSignUp } from '../services'
 
 SignUp.propTypes = {

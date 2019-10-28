@@ -1,5 +1,4 @@
 import React from 'react'
-import 'whatwg-fetch'
 import { deleteFromStorage, getFromStorage } from '../Storage'
 import styled from 'styled-components/macro'
 import { LogOutCircle } from 'styled-icons/boxicons-regular/LogOutCircle'

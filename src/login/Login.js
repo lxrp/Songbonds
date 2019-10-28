@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import 'whatwg-fetch'
 import { onLogin } from '../services'
 
 Login.propTypes = {

@@ -14,8 +14,8 @@ export default function Logout({ onLogout }) {
 
     if (tokenObject && tokenObject.token) {
       const { token } = tokenObject
-      // Verify token
-      fetch('users/logout?token=' + token)
+
+      fetch('/logout?token=' + token)
         .then(res => res.json())
         .then(json => {
           if (json.success) {

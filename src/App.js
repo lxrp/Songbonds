@@ -21,11 +21,9 @@ export default function App() {
       getActiveUser(token).then(user => {
         setActiveUser(user)
       })
-
       return fetch('/verify?token=' + token)
         .then(res => res.json())
         .then(setIsLoggedIn(true))
-        .catch(error => console.log(error))
     } else {
       setIsLoggedIn(false)
     }

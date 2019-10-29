@@ -1,68 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Songbonds
 
-## Available Scripts
+This app has been developed as my final project at the [neue fische](https://www.neuefische.de/weiterbildung/web-development "neue fische web-development") web developer bootcamp.
+It is an app for musicians to organize their different files and data for their songs. They can bundle texts, images and audio-files for each song. 
 
-In the project directory, you can run:
 
-### `npm start`
+## Preview
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<p>
+<img src="https://res.cloudinary.com/songbonds/image/upload/v1572295456/GitHub-Pics/q0d1a9s8kbmd2bopvw2r.png" width="200">
+<img src="https://res.cloudinary.com/songbonds/image/upload/v1572295457/GitHub-Pics/wec06tsxkkwia0vjiwtt.png" width="200">
+<img src="https://res.cloudinary.com/songbonds/image/upload/v1572295462/GitHub-Pics/kcev0bn8cnyxwcp715ld.png" width="200">
+</p>
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Tech stack
 
-### `npm test`
+   * **M**ongoDB
+   * **E**xpress.js
+   * **R**eact
+   * **N**ode.js
+   
+### Additional dependencies:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  * axios
+  * bcrypt
+  * cors
+  * mongoose
+  * nodemon
+  * prop-types
+  * react-h5-audio-player
+  * react-router-dom
+  * styled-components
+  * styled-icons
 
-### `npm run build`
+## Setup
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`git@github.com:lxrp/songbonds.git
+`
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
+cd songbonds
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Requirements
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### MongoDB
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+You will need a Songbonds database with the collections **songs, users and usersessions** in your MongoDB running on localhost:27017.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Cloudinary
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+* Create an account on https://cloudinary.com/.
+* Go to https://cloudinary.com/console/settings/upload#upload_presets
+* Click Enable unsigned uploading
+* Copy the preset name (the 8 character hash below name)
+* Create a .env.local file in the root directory of this project and add your cloudname and preset:
 
-## Learn More
+```
+REACT_APP_CLOUDINARY_CLOUDNAME='your_cloudname'
+REACT_APP_CLOUDINARY_PRESET='your_preset'
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+**Run the app in the development mode with:**
+```
+npm start
+```

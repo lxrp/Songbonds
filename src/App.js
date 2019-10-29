@@ -25,7 +25,6 @@ export default function App() {
       return fetch('/verify?token=' + token)
         .then(res => res.json())
         .then(setIsLoggedIn(true))
-        .catch(error => console.log(error))
     } else {
       setIsLoggedIn(false)
     }

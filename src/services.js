@@ -29,7 +29,7 @@ export function onSignUp(
   isBand,
   bandname
 ) {
-  return fetch('/users/signup', {
+  return fetch('/signup', {
     method: 'POST',
     body: JSON.stringify({
       name: username,
@@ -54,7 +54,7 @@ export function onSignUp(
 }
 
 export function onLogin(loginEmail, loginPassword) {
-  return fetch('/users/login', {
+  return fetch('/login', {
     method: 'POST',
     body: JSON.stringify({
       email: loginEmail,

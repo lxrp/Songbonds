@@ -14,10 +14,12 @@ server.use(express.json())
 server.use(cors())
 server.set('json spaces', 2)
 
-server.use('/songs', require('./routes/songs'))
-server.use('/users', require('./routes/users'))
-server.use('/getUser', require('./routes/getUser'))
 server.use('/getSongsByAuthor', require('./routes/getSongsByAuthor'))
+server.use('/getUser', require('./routes/getUser'))
+server.use('/login', require('./routes/login'))
+server.use('/logout', require('./routes/logout'))
+server.use('/signup', require('./routes/signup'))
+server.use('/songs', require('./routes/songs'))
 
 // Bodyparser middleware
 server.use(bodyParser.urlencoded({ extended: false }))

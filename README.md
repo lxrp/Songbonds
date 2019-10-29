@@ -34,7 +34,8 @@ It is an app for musicians to organize their different files and data for their 
 
 ## Setup
 
-git@github.com:lxrp/songbonds.git
+`git@github.com:lxrp/songbonds.git
+`
 
 ```
 cd songbonds

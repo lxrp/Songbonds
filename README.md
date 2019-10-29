@@ -1,6 +1,6 @@
 # Songbonds
 
-This app has been developed as my final project at the [neue Fische](https://www.neuefische.de/weiterbildung/web-development "neue fische web-development") web developer bootcamp.
+This app has been developed as my final project at the [neue fische](https://www.neuefische.de/weiterbildung/web-development "neue fische web-development") web developer bootcamp.
 It is an app for musicians to organize their different files and data for their songs. They can bundle texts, images and audio-files for each song. 
 
 

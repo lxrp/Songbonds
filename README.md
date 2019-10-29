@@ -1,6 +1,6 @@
 # Songbonds
 
-This app has been developed as my final project at the *neue Fische* web developer bootcamp.
+This app has been developed as my final project at the [neue Fische](https://www.neuefische.de/weiterbildung/web-development "neue fische web-development") web developer bootcamp.
 It is an app for musicians to organize their different files and data for their songs. They can bundle texts, images and audio-files for each song. 
 
 
@@ -14,17 +14,19 @@ It is an app for musicians to organize their different files and data for their 
 
 ## Tech stack
 
-   * MongoDB
-   * Express.js
-   * React
-   * Node.js
-
-Additional dependencies:
+   * **M**ongoDB
+   * **E**xpress.js
+   * **R**eact
+   * **N**ode.js
+   
+### Additional dependencies:
 
   * axios
   * bcrypt
+  * cors
   * mongoose
   * nodemon
+  * prop-types
   * react-h5-audio-player
   * react-router-dom
   * styled-components
@@ -44,7 +46,7 @@ npm install
 
 ### MongoDB
 
-You will need a Songbonds database with the collections **songs, users and usersessions** in your MongoDB. 
+You will need a Songbonds database with the collections **songs, users and usersessions** in your MongoDB running on localhost:27017.
 
 ### Cloudinary
 

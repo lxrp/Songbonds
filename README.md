@@ -37,9 +37,13 @@ It is an app for musicians to organize their different files and data for their 
 `git@github.com:lxrp/songbonds.git
 `
 
+`install node.js: https://nodejs.org/en/download/
+`
+
 ```
 cd songbonds
 npm install
+npm install npm-run-all --save-dev
 ```
 
 
